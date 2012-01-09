@@ -1,1 +1,252 @@
-Page
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Custom-select Demo</title>
+<link rel="stylesheet" type="text/css" href="css/selectik.css" />
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery.selectik.js"></script>
+</head>
+<body>
+	<div class="header">
+        <h1>Selectik</h1>
+        <h2 class="design">Designed & built by <b>Ivan Kubrakov</b>.</h2>
+        <p><b>Selectik is jQuery plugin</b>, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.</p>
+        <p><b>Features:</b></p>
+        <ul>
+        	<li>TAB key</li>
+            <li>keys up/down and Enter/Esc control</li>
+            <li>mouse wheel control</li>
+            <li>search by first letter</li>
+        </ul>
+        <p>Support browsers: <b>IE7+, Chrome, Safari, Firefox.</b></p>
+        <p>All functionality you can test below in sandbox. Also you can test a speed generation of custom selects.</p>
+        <p>Latest code and issue tracker placed on <a href="https://github.com/Brankub/selectik">https://github.com/Brankub/selectik</a>. If you will find problems in usage, please put an issue on <a href="https://github.com/Brankub/selectik/issues">GitHub</a></p>
+    </div>
+	<div class="main clearfix">    	
+        <div class="select-column">
+        	<div class="promo">
+            	<h2>Examples of custom selects</h2>
+                <input type="text" value="You can start TAB from here" onFocus="$(this).val('')" class="tabthis" />
+            </div>
+                <div class="selects">
+                    <div class="first select-block">
+                        <select>
+                            <option value="Выберите героя">Выберите героя</option>
+                            <option value="Витя">Витя</option>
+                            <option value="Чебурашка">Чебурашка</option>
+                            <option value="Крокодил Гена">Крокодил Гена</option>
+                            <option value="Шапокляк">Шапокляк</option>
+                            <option value="Крыса Лариса">Крыса Лариса</option>
+                            <option value="New">New</option>
+                            <option value="Буратино">Буратино</option>
+                            <option value="Троль" disabled>Троль</option>
+                            <option value="Мэри Поппинс">Мэри Поппинс</option>
+                            <option value="Муми-тролли">Муми-тролли</option>
+                            <option value="Дюймовочка">Дюймовочка</option>
+                            <option value="Чебурашка1">Чебурашка1</option>
+                            <option value="Крокодил Гена2">Крокодил Гена2</option>
+                            <option value="Шапокляк3">Шапокляк3</option>
+                            <option value="ISM Ukraine">ISM Ukraine</option>
+                       </select>
+                   </div>
+                   <div class="second select-block">
+                       <select>
+                            <option value="Чебурашка">Чебурашка</option>
+                            <option value="Крокодил Гена">Крокодил Гена</option>
+                            <option selected value="Шапокляк">Шапокляк</option>
+                            <option value="Крыса Лариса">Крыса Лариса</option>
+                             <option value="New">New</option>
+                       </select>
+                   </div>
+                   <div class="third select-block">
+                       <select>
+                            <option disabled>Выберите героя</option>
+                            <option value="Чебурашка">Чебурашка</option>
+                            <option selected value="Крокодил Гена">Крокодил Гена</option>
+                            <option value="Шапокляк">Шапокляк</option>
+                            <option value="Крыса Лариса">Крыса Лариса</option>
+                       </select>
+                   </div>
+                </div>
+           </div>
+           <div class="controls-column">
+               <div class="buttons">
+               		<div class="column">
+                    	<h2>Test dynamical insert select</h2>
+                       <div class="line">
+                           <b class="l-text">Quantity of options</b>
+                           <input type="number" id="quantity" value="10000" min="1"/>
+                       </div>
+                       <div class="line">
+                           <b class="l-text">Width of select</b>
+                           <input type="number" id="width" value="0"/><br/>
+                           <span>If 0 - width of bigger option</span>
+                       </div>
+                       <div class="line">
+                           <b class="l-text">Max items</b>
+                           <input type="number" id="maxEl" value="5" min="1"/>
+                           <span></span>
+                       </div>
+                       <div class="line">
+                           <b class="l-text">Type of scroll</b>
+                           <select id="type">
+                            <option value="1">Custom</option>
+                            <option value="0">Standard</option>
+                           </select>
+                       </div>
+                       <div class="line">
+                           <b class="l-text">Speed of fade animation</b>
+                           <input type="number" id="speed" value="200"/>
+                       </div>
+                       <input type="button" id="new" value="Insert" /><br/>
+                        <h3>Show original selects</h3>
+                       <input type="button" onClick="$('.done').removeClass('done')" value="Show original selects" /><br/><br/>
+                        <div class="info-block">
+                            <div id="info" class="emulate"><b>Info about time operation:</b><br/></div>            
+                        </div>
+                    </div>
+                    <div class="column">
+                    	<h2>Examples of API</h2>
+                        <h3>Insert 'new option' in <ins>first</ins> select and 'reload' </h3>
+                       <input type="text" id="newValue" value="You can type here value of option" onFocus="$(this).val('')" class="tabthis" /><br/>
+                       <input type="button" onClick="$('.first select').append($('<option></option>').attr('value', $('#newValue').val()).text($('#newValue').val()))" value="Add option to first select" />
+                       <input type="button" onClick="$('.first select').data('selectik').refreshCS();" value="Refresh first list" />
+                       <h3>Show/hide <ins>second</ins> list</h3>
+                       <input type="button" onClick="$('.second select').data('selectik').showCS();" value="Show" />
+                       <input type="button" onClick="$('.second select').data('selectik').hideCS();" value="Hide" />
+                       <h3>Set new 'selected' (active) option for <ins>first</ins> select</h3>
+                       <b class="l-text">Index number option</b>
+                       <input type="text" id="number" value="1" type="number" min="1" class="l-input" /><input type="button" onClick="$('.first select').data('selectik').changeCS({index: $('#number').val()});" value="Set" /><br/><br/>
+                       <b class="l-text">Value options</b>
+                       <input type="text" id="values" value="New" class="l-input" /><input type="button" onClick="$('.first select').data('selectik').changeCS({value: $('#values').val()});" value="Set" />
+                       <h3>Set new 'width' (active) option for <ins>third</ins> select</h3>
+                       <input type="text" id="newWidth" value="200" type="number" min="0"  class="l-input" onFocus="$(this).val('')" />
+                       <input type="button" onClick="$('.third select').data('selectik').setWidthCS($('#newWidth').val());" value="Set width to third select" />
+                       <h3>'Enable'/'Disable' <ins>first</ins> select</h3>
+                       <input type="button" onClick="$('.first select').data('selectik').disableCS();" value="Disable" />
+                       <input type="button" onClick="$('.first select').data('selectik').enableCS();" value="Enable" />
+                    </div>
+               </div>
+           </div>
+    </div>
+    <div class="content">
+       <div class="description">
+            <h1>Usage</h1>
+            <p>First include in html head tag stylesheet for custom selects (you can customize demo CSS file), <a href="http://jquery.com/">jQuery</a>, jQuery mousewheel plugin (included in project), and Selectik .js file:
+		    <p class="code">
+            	&lt;head&gt;<br/>
+                <span>...</span><br/>
+                <span>&lt;link rel="stylesheet" type="text/css" href="css/selectik.css" /&gt;</span> <ins>// CSS for Selectik</ins><br/>
+                <span>&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"&gt;&lt;/script&gt;</span> <ins>// jQuery library</ins><br/>
+                <span>&lt;script type="text/javascript" src="js/jquery.mousewheel.js"&gt;&lt;/script&gt;</span> <ins>// mousewhell plugin</ins><br/>
+                <span>&lt;script type="text/javascript" src="js/jquery.selectik.js"&gt;&lt;/script&gt;</span> <ins>// Selectik plugin</ins><br/>
+                <span>...</span><br/>
+				&lt;/head&gt;      	
+            </p>
+            You can choose what select should be custom by class, id or use for all selects on page by tag:</p>
+            <b>For all selects on page:</b>
+            <p class="code">
+                $(document).ready(function(){<br/>
+                    <span>$('select').selectik();</span><br/>
+                });            	
+            </p>
+            <b>Only with some class/id:</b>
+            <p class="code">
+                $(document).ready(function(){<br/>
+                    <span>$('.someclass').selectik();</span><br/>
+                });            	
+            </p>
+            <h1>Plugin parametrs</h1>
+            <p><b>Container class (containerClass)</b> - for customizing class of main div around custom and original select. Default value - 'custom-select'.</p>
+            <p><b>Width of custom select (width)</b> - if you willn't use this parametr custom select will be with width of bigger option. Default value - '0'.</p>
+            <p><b>Maximum items (maxItems)</b> - you can put max quantity of options that should be visible. If quantity of options will be bigger plugin will put scroll. If value of this paramentr will be '0', all options will be visible. Default value - '0'.</p>
+            <p><b>Type of scroll (customScroll)</b> - choose type of scroll (custom or original). 1 - custom, 0 - original. Default value - '1'.</p>
+            <p><b>Speed of animation (speedAnimation)</b> - speed of show/hide animation in milliseconds. Default value - '200'.</p>
+            <b>Example of using parametrs:</b>
+            <p class="code">
+            	$('select').selectik({<br/>
+                <span>width: 300,</span><br/>
+                <span>maxItems: 5,</span><br/>
+                <span>customScroll: 0,</span><br/>
+                <span>speedAnimation: 100</span><br/>
+                });
+            </p>
+            <h1>Plugin API</h1>
+            <p>API of plugin are utils which used when necessary to reload, show/hide, enable/disable, change selected option or set dynamicly width of select.</p>
+            <p>In Selectik jQuery store a reference to the plugin of object by 'data'. In this case you should use 'data' and know what select to control.</p>
+            <b>Reload custom select when original was changed:</b>
+            <p class="code">
+            	$('.first select').data('selectik').reloadCS();
+            </p>
+            <b>Show/hide list:</b>
+            <p class="code">
+            	$('.second select').data('selectik').showCS(); <ins>// show list</ins><br/>
+                $('.second select').data('selectik').hideCS(); <ins>// hide list</ins>
+            </p>
+            <b>Change selected option:</b>
+            <p class="code">
+            	$('.first select').data('selectik').changeCS({index: 1}); <ins>// set first option 'selected' </ins><br/>
+                $('.first select').data('selectik').changeCS({value: 'New'}); <ins>// set selected options with value 'New'</ins>
+            </p>
+            <b>Set width:</b>
+            <p class="code">
+            	$('.third select').data('selectik').setWidthCS(200); <ins>// set width 200px </ins>
+            </p>
+            <b>Enable/disable select:</b>
+            <p class="code">
+            	$('.first select').data('selectik').disableCS(); <ins>// disable select </ins><br/>
+            	$('.first select').data('selectik').enableCS(); <ins>// enable select </ins>
+            </p>
+       </div>
+    </div>
+    <div class="footer">
+		<p>Designed & built by <b>Ivan Kubrakov</b>. Thanks for the patience to <b>Victor Slivinskiy</b>.</p>
+    </div>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        // attach the plugin to all selects
+        $('.selects select').selectik({ maxItems: 8});
+
+        // only for demo
+        newSelect();
+    });
+	
+    function newSelect(){
+		var selectCount = 1;
+        $('#new').click(function(){
+		
+			var html = '';
+			var quantity = parseInt($('#quantity').val());
+			var width = parseInt($('#width').val());
+			var type = $('#type').val();
+			var speed = parseInt($('#speed').val());
+			var maxEl = parseInt($('#maxEl').val());
+			
+			for ( var i = 0; i < quantity; i++ ){
+				html += '<option value="Option'+i+'">Option'+i+'</option>';
+			}
+			
+			html = '<div class="new'+selectCount+' select-block"><select>'+html+'</select></div>';
+			$(html).appendTo('.selects');
+			d0 = new Date();
+            $('.new'+selectCount+' select').selectik({
+				width: width,
+				maxItems: maxEl,
+				customScroll: type,
+				speedAnimation: speed
+			});
+			d1 = new Date();
+			selectCount++;
+			time(d1-d0, quantity, type);
+        });
+    }
+	
+	function time(e, quantity, type){
+		$('#info').html($('#info').html()+'Time of insert Selectik: <b>'+e+'ms</b><br/>');
+	}
+    </script>
+</body>
+</html>
