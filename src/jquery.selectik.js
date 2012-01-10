@@ -1,3 +1,6 @@
+// Copyright (c) 2012 Ivan Kubrakov 
+// Selectik: a jQuery custom select plugin http://brankub.github.com/selectik/
+
 (function($) {
 	// global variables
 	var openList = false;
