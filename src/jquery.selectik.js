@@ -5,6 +5,7 @@
 	// global variables
 	var openList = false;
 	var selectControl = false;
+	var trigger = false;
 	
 	$.selectik = function(element, options) {
 		// global variables for this instance of plugin
@@ -208,6 +209,9 @@
 				_changeSelected($(this));
 			});
 			$cselect.bind('keyup', function(e) { _keysHandlers(e) });
+			if ($.browser.opera){
+				$cselect.bind('keydown', function(e) { trigger = true; });
+			}
 		}
 	
 	        // private method: handlers on keys
@@ -321,6 +325,7 @@
         }
 	});
 	$(document).bind('click', function(){
+		if (trigger) { trigger = false; return; }
 		if (openList){
 			openList = false;
 			if ($('.custom-select.open').length > 0){
