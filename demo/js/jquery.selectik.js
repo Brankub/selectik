@@ -11,7 +11,7 @@
 		// global variables for this instance of plugin
 		var count, standardTop, heightItem, heightContainer, disabled, heightList, heightShift, relating, shiftL, heightScroll, scrollL = false, inputSearch = '', change = false, settings;
 		// global variables for this instance of plugin (objects)
-		var $listContainer, $list, $text, $listContainer, $scroll, $container, $bgScroll, $collection;
+		var $listContainer, $list, $text, $scroll, $container, $bgScroll, $collection;
 	
 			// private method: plugin's default options
 	        var _defaults = {
