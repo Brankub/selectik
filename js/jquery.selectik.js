@@ -70,9 +70,11 @@
 			if (e.refreshSelect){
 				html = '<ul>'+html+'</ul>';
 				$(html).prependTo($('.select-list', $container));
+				_clickHandler();
 			}else{
 				html = '<span class="custom-text">'+$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo($container);
+				_clickHandler();
 			}
 
 			$list = $('ul', $container);
@@ -189,6 +191,14 @@
 			if (!scrollL) { return; }
 			_shiftHelper(-topShift);
 		};
+		
+		// private method: click on li
+		var _clickHandler = function(){
+			$('li').bind('mousedown', function(){
+				 if ($(this).hasClass('disabled')) { return false; }
+				_changeSelected($(this));
+			});	
+		}
 
 		// private method: handlers
 		var _handlers = function(){
@@ -225,12 +235,6 @@
 					$cselect.parent().removeClass('active');
 				}				
             });
-
-			// click on custom option
-			$('li', $list).bind('click', function(){
-				 if ($(this).hasClass('disabled')) { return false; }
-				_changeSelected($(this));
-			});
 
 			$cselect.bind('keyup', function(e) { _keysHandlers(e); });
 			if ($.browser.opera){
