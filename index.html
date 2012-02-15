@@ -34,20 +34,24 @@
             </div>
                 <div class="selects">
                     <div class="first select-block">
-                        <select>
-                            <option value="Choose hero">Choose hero</option>
-                            <option value="Spider Man">Spider Man</option>
-                            <option value="Wolverine">Wolverine</option>
-                            <option value="Captain America">Captain America</option>
-                            <option value="X-Men">X-Men</option>
-                            <option value="Crocodile">Crocodile</option>
-                            <option value="Cheburashka">Cheburashka</option>
-                            <option value="Elephant">Elephant</option>
-                            <option value="New">New</option>
-                       </select>
+                        <form>
+                            <select>
+                                <option value="0">Choose hero</option>
+                                <option value="1">Spider Man</option>
+                                <option value="2">Wolverine</option>
+                                <option value="3">Captain America</option>
+                                <option value="X-Men">X-Men</option>
+                                <option value="Crocodile">Crocodile</option>
+                                <option value="Cheburashka">Cheburashka</option>
+                                <option value="Elephant">Elephant</option>
+                                <option value="New">New</option>
+                           </select>
+                            <br/>
+                            <input type="reset" value="Reset select" />
+                        </form>
                    </div>
                    <div class="second select-block">
-                       <select>
+                       <select >
 							<option value="Choose hero">Choose hero</option>
                             <option value="Spider Man">Spider Man</option>
                             <option value="Wolverine">Wolverine</option>
@@ -94,8 +98,7 @@
                        </div>
                        <input type="button" id="new" value="Insert" /><br/>
                         <h3>Show original selects</h3>
-                       <input type="button" onClick="$('.done').removeClass('done').addClass('show')" value="Show original selects" /><br/>
-                       <input type="button" onClick="$('.show').removeClass('show').addClass('done')" value="Hide original selects" /><br/>
+                       <input type="button" onClick="$('.done').removeClass('done')" value="Show original selects" /><br/><br/>
                         <div class="info-block">
                             <div id="info" class="emulate"><b>Info about time operation:</b><br/></div>            
                         </div>
@@ -171,7 +174,7 @@
             <p>In Selectik jQuery store a reference to the plugin of object by 'data'. In this case you should use 'data' and know what select to control.</p>
             <b>Reload custom select when original was changed:</b>
             <p class="code">
-            	$('.first select').data('selectik').reloadCS();
+            	$('.first select').data('selectik').refreshCS();
             </p>
             <b>Show/hide list:</b>
             <p class="code">
