@@ -70,16 +70,15 @@
 			if (e.refreshSelect){
 				html = '<ul>'+html+'</ul>';
 				$(html).prependTo($('.select-list', $container));
-				_clickHandler();
 			}else{
 				html = '<span class="custom-text">'+$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo($container);
-				_clickHandler();
 			}
 
 			$list = $('ul', $container);
 			$text = $('.custom-text', $container);
 			$listContainer = $('.select-list', $container);
+			_clickHandler();
 			$('li:eq('+($selected.index())+')', $list).addClass('selected');
 
 			// give width to elements
@@ -194,7 +193,7 @@
 		
 		// private method: click on li
 		var _clickHandler = function(){
-			$('li').bind('mousedown', function(){
+			$listContainer.on('mousedown', 'li', function(){
 				 if ($(this).hasClass('disabled')) { return false; }
 				_changeSelected($(this));
 			});	
