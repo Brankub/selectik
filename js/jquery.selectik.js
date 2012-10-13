@@ -318,7 +318,8 @@
 		selectik.changeCS = function(val) {
 			var index = (val.index > 0) ? val.index : $('option[value="'+val.value+'"]', $cselect).index()+1;
 			var dataValue = $('option:nth-child('+(index)+')', $cselect).attr('value');
-			_changeSelectedHtml(dataValue, index);
+			var textValue = $('option:nth-child('+(index)+')', $cselect).text()
+			_changeSelectedHtml(dataValue, textValue, index);
 		};
 
 		// public method: disable list
