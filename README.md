@@ -77,26 +77,28 @@ Plugin API
 API of plugin are utils which used when necessary to reload, show/hide, enable/disable, change selected option or set dynamicly width of select.
 
 In Selectik jQuery store a reference to the plugin of object by 'data'. In this case you should use 'data' and know what select to control.
-Reload custom select when original was changed:
+
+**Reload custom select when original was changed:**
 
 `$('.first select').data('selectik').refreshCS();`
 
-Show/hide list:
+**Show/hide list:**
 
 `$('.second select').data('selectik').showCS();` // show list
 
 `$('.second select').data('selectik').hideCS();` // hide list
 
-Change selected option:
+**Change selected option:**
 
 `$('.first select').data('selectik').changeCS({index: 1});` // set first option 'selected'
+
 `$('.first select').data('selectik').changeCS({value: 'New'});` // set selected options with value 'New'
 
-Set width:
+**Set width:**
 
 `$('.third select').data('selectik').setWidthCS(200);` // set width 200px
 
-Enable/disable select:
+**Enable/disable select:**
 
 `$('.first select').data('selectik').disableCS();` // disable select
 
