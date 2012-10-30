@@ -25,7 +25,7 @@ First include in html head tag stylesheet for custom selects (you can customize 
 <head>
 ...
 <link rel="stylesheet" type="text/css" href="css/selectik.css" /> // CSS for Selectik
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> // jQuery library
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.mousewheel.js"></script> // mousewhell plugin
 <script type="text/javascript" src="js/jquery.selectik.js"></script> // Selectik plugin
 ...
@@ -59,7 +59,7 @@ Plugin parametrs
 
 + **Type of scroll (customScroll)** - choose type of scroll (custom or original). 1 - custom, 0 - original. Default value - '1'.
 
-+ Speed of animation (speedAnimation)** - speed of show/hide animation in milliseconds. Default value - '200'.
++ **Speed of animation (speedAnimation)** - speed of show/hide animation in milliseconds. Default value - '200'.
                                                                                                       - 
 Example of using parametrs:
 ```
@@ -78,20 +78,25 @@ API of plugin are utils which used when necessary to reload, show/hide, enable/d
 
 In Selectik jQuery store a reference to the plugin of object by 'data'. In this case you should use 'data' and know what select to control.
 Reload custom select when original was changed:
+
 `$('.first select').data('selectik').refreshCS();`
 
 Show/hide list:
+
 `$('.second select').data('selectik').showCS();` // show list
 `$('.second select').data('selectik').hideCS();` // hide list
 
 Change selected option:
+
 `$('.first select').data('selectik').changeCS({index: 1});` // set first option 'selected'
 `$('.first select').data('selectik').changeCS({value: 'New'});` // set selected options with value 'New'
 
 Set width:
+
 `$('.third select').data('selectik').setWidthCS(200);` // set width 200px
 
 Enable/disable select:
+
 `$('.first select').data('selectik').disableCS();` // disable select
 `$('.first select').data('selectik').enableCS();` // enable select
 
