@@ -2,7 +2,7 @@
 // Selectik: a jQuery custom select plugin http://brankub.github.com/selectik/
 
 (function($) {
-  // global variables
+	// global variables
 	var openList = false;
 	var selectControl = false;
 	var trigger = false;
@@ -28,8 +28,16 @@
              cselect = element;
 
 		selectik.init = function() {
-		// merged properties
-				settings = $.extend({}, _defaults, options);
+			// merged properties
+			settings = $.extend({}, _defaults, options);
+			//Check select width
+			//Select width is inconsistent in different browser,
+			//so we wrap select by inline element and get it's width
+			if( settings.width == 0 ) {
+			    $cselect.wrap('<span/>');
+			    settings.width = $cselect.parent().width();
+			    $cselect.parent().replaceWith( $cselect );
+			}
 			// fire start functions
 			_getHtml();
 			_handlers();
@@ -83,9 +91,8 @@
 
 			// give width to elements
 			$container.removeClass('done');
-			var width = (settings.width > 0) ? settings.width :  $cselect.outerWidth();
 
-			selectik.setWidthCS(width);
+			selectik.setWidthCS(settings.width);
 			standardTop = parseInt($listContainer.css('top'));
 
 
@@ -341,8 +348,14 @@
 
 		// public method: width of select
 		selectik.setWidthCS = function(width){
-			$list.css('width', width);
-			$text.css('width', width);
+			//Paddings may has element or/and it's parent
+			$.each([$list,$text],function() {
+				var $parent   = $(this).parent(),
+				parentPaddings  = $parent.outerWidth() - $parent.width(),
+				elementPaddings = $(this).outerWidth() - $(this).width(),
+				paddings = parentPaddings + elementPaddings;
+				$(this).css('width', width - paddings);
+			});
 		};
 		selectik.init();
 	};
