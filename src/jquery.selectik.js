@@ -52,20 +52,29 @@
 
 		// private method: list html
 		var _getList = function(e){
-			var html = '';
 			count = cselect.length;
 			if (e.refreshSelect){ $('ul', $container).remove(); }
 
-			// loop html
-			$collection = $('option', $cselect);
+			// recursion html
+			var html = (function recur($element) {
+			    var html = '';
+			    $collection = $element.children();
 
-			for (var i = 0; i < $collection.length; i++){
-				var $this = $($collection[i]);
-				disabled = ($this.attr('disabled') === 'disabled') ? 'disabled' : '';
-				var textOption = $this[0].text;
-                var valueOption = $this[0].value;
-				html += '<li class="'+disabled+'" data-value="'+valueOption+'">'+textOption+'</li>';
-			}
+			    for (var i = 0; i < $collection.length; i++){
+				    var $this = $($collection[i]);
+				    if ( $this.prop("tagName") == "OPTION" ) {
+					disabled = ($this.attr('disabled') === 'disabled') ? 'disabled' : '';
+					var textOption = $this[0].text;
+					var valueOption = $this[0].value;
+					html += '<li class="'+disabled+'" data-value="'+valueOption+'">'+textOption+'</li>';
+				    } else if ( $this.prop("tagName") == "OPTGROUP" ) {
+					disabled = ($this.attr('disabled') === 'disabled') ? ' disabled' : '';
+					var textOption = $this.attr('label');
+					html += '<li class="optgroup'+disabled+'"><span class="optgroup-label">'+textOption+'</span><ul>' + recur($this) + '</ul></li>';
+				    }
+			    }
+			    return html;
+			})($cselect);
 
 			// html for control
 			var scrollHtml = (settings.maxItems > 0 && settings.customScroll == 1) ? '<div class="select-scroll"><span class="scroll-drag"><!-- --></span></div>' : '';
@@ -362,7 +371,7 @@
 
 	$.fn.selectik = function(options) {
         return this.each(function() {
-            if ($('optgroup', this).length > 0 || $(this).attr('multiple') == 'multiple') { return; }
+            if ($(this).attr('multiple') == 'multiple') { return; }
             if (undefined == $(this).data('selectik')) {
                 // create a new instance of the plugin
                 var selectik = new $.selectik(this, options);
