@@ -28,8 +28,16 @@
              cselect = element;
 
 		selectik.init = function() {
-		// merged properties
-				settings = $.extend({}, _defaults, options);
+			// merged properties
+			settings = $.extend({}, _defaults, options);
+			//Check select width
+			//Select width is inconsistent in different browser,
+			//so we wrap select by inline element and get it's width
+			if( settings.width == 0 ) {
+			    $cselect.wrap('<span/>');
+			    settings.width = $cselect.parent().width();
+			    $cselect.parent().replaceWith( $cselect );
+			}
 			// fire start functions
 			_getHtml();
 			_handlers();
@@ -83,9 +91,8 @@
 
 			// give width to elements
 			$container.removeClass('done');
-			var width = (settings.width > 0) ? settings.width :  $cselect.outerWidth();
 
-			selectik.setWidthCS(width);
+			selectik.setWidthCS(settings.width);
 			standardTop = parseInt($listContainer.css('top'));
 
 
