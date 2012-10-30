@@ -11,7 +11,7 @@
 		// global variables for this instance of plugin
 		var count, standardTop, heightItem, heightContainer, disabled, heightList, heightShift, relating, heightScroll, scrollL = false, change = false, settings;
 		// global variables for this instance of plugin (objects)
-		var $listContainer, $list, $text, $scroll, $container, $bgScroll, $collection, $selected;
+		var $listContainer, $list, $options, $text, $scroll, $container, $bgScroll, $selected;
 
         // private method: plugin's default options
         var _defaults = {
@@ -57,23 +57,23 @@
 
 			// recursion html
 			var html = (function recur($element) {
-			    var html = '';
-			    $collection = $element.children();
+				var html = '',
+				    $collection = $element.children();
 
-			    for (var i = 0; i < $collection.length; i++){
-				    var $this = $($collection[i]);
-				    if ( $this.prop("tagName") == "OPTION" ) {
-					disabled = ($this.attr('disabled') === 'disabled') ? 'disabled' : '';
-					var textOption = $this[0].text;
-					var valueOption = $this[0].value;
-					html += '<li class="'+disabled+'" data-value="'+valueOption+'">'+textOption+'</li>';
-				    } else if ( $this.prop("tagName") == "OPTGROUP" ) {
-					disabled = ($this.attr('disabled') === 'disabled') ? ' disabled' : '';
-					var textOption = $this.attr('label');
-					html += '<li class="optgroup'+disabled+'"><span class="optgroup-label">'+textOption+'</span><ul>' + recur($this) + '</ul></li>';
-				    }
-			    }
-			    return html;
+				for (var i = 0; i < $collection.length; i++){
+					var $this = $($collection[i]);
+					if ( $this.prop("tagName") == "OPTION" ) {
+						disabled = ($this.attr('disabled') === 'disabled') ? 'disabled' : '';
+						var textOption = $this[0].text;
+						var valueOption = $this[0].value;
+						html += '<li class="'+disabled+'"><a data-value="'+valueOption+'">'+textOption+'</a></li>';
+					} else if ( $this.prop("tagName") == "OPTGROUP" ) {
+						disabled = ($this.attr('disabled') === 'disabled') ? ' disabled' : '';
+						var textOption = $this.attr('label');
+						html += '<li class="optgroup'+disabled+'"><span>'+textOption+'</span><ul>' + recur($this) + '</ul></li>';
+					}
+				}
+				return html;
 			})($cselect);
 
 			// html for control
@@ -93,10 +93,11 @@
 			}
 
 			$list = $('ul', $container);
+			$options = $('a[data-value]',$list);
 			$text = $('.custom-text', $container);
 			$listContainer = $('.select-list', $container);
 			_clickHandler();
-			$('li:eq('+($selected.index())+')', $list).addClass('selected');
+			$options.eq($selected.index()).parent().addClass('selected');
 
 			// give width to elements
 			$container.removeClass('done');
@@ -199,9 +200,9 @@
 			if (indexEl < 0 || indexEl == count) { return; }
 			var topShift = (indexEl > count-settings.maxItems) ? heightList-heightContainer : heightItem*indexEl;
 			$('.selected', $list).removeClass('selected');
-			$('li:nth-child('+(indexEl+1)+')', $list).addClass('selected');
+			$options.eq(indexEl+1).parent().addClass('selected');
 			if (openList && selectControl){
-				$text.text($('li:nth-child('+(indexEl-1)+')', $list).data('value'));
+				$text.text($options.eq(indexEl-1).data('value'));
 			}
 			if (!scrollL) { return; }
 			_shiftHelper(-topShift);
@@ -209,22 +210,22 @@
 		
 		// private method: click on li
 		var _clickHandler = function(){
-			$listContainer.on('mousedown', 'li', function(){
-				 if ($(this).hasClass('disabled')) { return false; }
+			$listContainer.on('mousedown', 'a', function(){
+				 if ($(this).parents("li.disabled").length > 0) { return false; }
 				_changeSelected($(this));
 			});	
 		}
 
 		// private method: handlers
 		var _handlers = function(){
-            // reset button
-            var $reset = $('input[type="reset"]', $cselect.parents('form'));
-            if ($reset.length > 0){
-                $reset.bind('click', function(){
-                    var index = ($selected.length > 0) ? $selected.index(): 0;
-                    _changeSelected($('option:eq('+index+')', $cselect));
-                });
-            }
+			// reset button
+			var $reset = $('input[type="reset"]', $cselect.parents('form'));
+			if ($reset.length > 0){
+				$reset.bind('click', function(){
+					var element = ($selected.length > 0) ? $selected : $('option', $cselect).first();
+					_changeSelected(element);
+				});
+			}
 
 			// change on original select
 			$cselect.bind('change', function(){
@@ -234,22 +235,22 @@
 
 			// click on select
 			$text.bind('click', function(){
-	        	if( $container.hasClass('disable')) { return false; }
+				if( $container.hasClass('disable')) { return false; }
 				$cselect.focus();
 				_fadeList($listContainer, false, true);
 			});
 
-            // active class
-            $cselect.bind('focus', function(){
-                $container.addClass('active');
-            });
-            $cselect.bind('blur', function(){
-                $container.removeClass('active');
+			// active class
+			$cselect.bind('focus', function(){
+				$container.addClass('active');
+			});
+			$cselect.bind('blur', function(){
+				$container.removeClass('active');
 				if (openList){
 					selectik.hideCS();
 					$cselect.parent().removeClass('active');
-				}				
-            });
+				}
+			});
 
 			$cselect.bind('keyup', function(e) { _keysHandlers(e); });
 			if ($.browser.opera){
@@ -270,17 +271,19 @@
 		// private method: change selected
 		var _changeSelected = function(e){
 			var dataValue = (e.parents('select').length > 0) ? e.attr('value') : e.data('value');
-            var textValue = e.text();
-			_changeSelectedHtml(dataValue, textValue, e.index()+1);
+			var index = (e.parents('select').length > 0) ? e.index() : e.parent().index();
+			var textValue = e.text();
+			_changeSelectedHtml(dataValue, textValue, index);
 		};
 
 		// private method: change selected
 		var _changeSelectedHtml = function(dataValue, textValue, index){
-			if (index > count || index == 0) { return false;}
+			//input[type=reset] may give index 0
+			if (index > count || index < 0) { return false;}
 			change = true;
 			$cselect.attr('value', dataValue).change();
 			$('.selected', $list).removeClass('selected');
-			$('li:nth-child('+ index +')', $list).addClass('selected');
+			$options.eq(index).parent().addClass('selected');
 			$text.text(textValue);
 		};
 

@@ -45,7 +45,7 @@
 	cursor:				pointer;
 	display:			inline-block;
 	}
-.custom-select li{
+.custom-select li a{
 	cursor:				pointer
 	}
 .select-scroll{
@@ -146,11 +146,11 @@
 .select-list.custom-scroll{
 	padding:			2px 0 2px 10px;
 	}
-.select-list .selected,
-.select-list li:hover{
+.select-list .selected a,
+.select-list li:hover a{
 	color:				#FFF
 	}
-.select-list li.disabled{
+.select-list li.disabled a{
 	color:				#CCCCCC;
 	cursor:				default
 	}
