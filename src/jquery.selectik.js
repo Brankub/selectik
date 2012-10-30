@@ -341,8 +341,14 @@
 
 		// public method: width of select
 		selectik.setWidthCS = function(width){
-			$list.css('width', width);
-			$text.css('width', width);
+			//Paddings may has element or/and it's parent
+			$.each([$list,$text],function() {
+				var $parent   = $(this).parent(),
+				parentPaddings  = $parent.outerWidth() - $parent.width(),
+				elementPaddings = $(this).outerWidth() - $(this).width(),
+				paddings = parentPaddings + elementPaddings;
+				$(this).css('width', width - paddings);
+			});
 		};
 		selectik.init();
 	};
