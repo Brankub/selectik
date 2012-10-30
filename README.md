@@ -84,6 +84,7 @@ Reload custom select when original was changed:
 Show/hide list:
 
 `$('.second select').data('selectik').showCS();` // show list
+
 `$('.second select').data('selectik').hideCS();` // hide list
 
 Change selected option:
@@ -98,6 +99,7 @@ Set width:
 Enable/disable select:
 
 `$('.first select').data('selectik').disableCS();` // disable select
+
 `$('.first select').data('selectik').enableCS();` // enable select
 
         
