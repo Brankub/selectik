@@ -9,6 +9,9 @@ Features:
 * original select key control
 * mouse wheel control
 * search by first letter
+* custom/default scroll
+* smart positioning
+* auto/cutsom width
 
 Support browsers:
 -----------------
