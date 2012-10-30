@@ -21,26 +21,32 @@ Usage
 -----
 First include in html head tag stylesheet for custom selects (you can customize demo CSS file), jQuery, jQuery mousewheel plugin (included in project), and Selectik .js file:
 
-`<head>
+```
+<head>
 ...
 <link rel="stylesheet" type="text/css" href="css/selectik.css" /> // CSS for Selectik
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> // jQuery library
 <script type="text/javascript" src="js/jquery.mousewheel.js"></script> // mousewhell plugin
 <script type="text/javascript" src="js/jquery.selectik.js"></script> // Selectik plugin
 ...
-</head>`
+</head>
+```
 
 You can choose what select should be custom by class, id or use for all selects on page by tag:
 
 For all selects on page:
-`$(document).ready(function(){
+```
+$(document).ready(function(){
 $('select').selectik();
-});`
+});
+```
 
 Only with some class/id:
-`$(document).ready(function(){
+```
+$(document).ready(function(){
 $('.someclass').selectik();
-});`
+});
+```
 
 Plugin parametrs
 ----------------
@@ -56,12 +62,14 @@ Plugin parametrs
 + Speed of animation (speedAnimation)** - speed of show/hide animation in milliseconds. Default value - '200'.
                                                                                                       - 
 Example of using parametrs:
-`$('select').selectik({
+```
+$('select').selectik({
 width: 300,
 maxItems: 5,
 customScroll: 0,
 speedAnimation: 100
-});`
+});
+```
 
 Plugin API
 ----------
