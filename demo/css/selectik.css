@@ -111,8 +111,10 @@
 	top:				-6px;
 	right:				12px;
 	display:			block;
-	float:				right;
 	content:			'̬';
+	float: 				right;
+	width:				6px;
+	z-index: 			2;
 	}
 .custom-select span.custom-text:hover,
 .active span.custom-text{
