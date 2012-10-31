@@ -113,6 +113,7 @@
 	display:			block;
 	float:				right;
 	content:			'̬';
+	width:				6px;
 	}
 .custom-select span.custom-text:hover,
 .active span.custom-text{
