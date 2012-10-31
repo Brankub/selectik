@@ -311,7 +311,7 @@
 			elParent = e.parent();
 			var heightPosition = (scrollL) ? settings.maxItems*heightItem : count*heightItem;
 			var quaItems = (scrollL) ? settings.maxItems : count;
-			var topPosition = ($(window).outerHeight() - (elParent.offset().top - $(window).scrollTop()) - elParent.outerHeight() < heightPosition) ? -quaItems*heightItem-(elParent.outerHeight()/4) : standardTop;
+			var topPosition = ($(window).height() - (elParent.offset().top - $(window).scrollTop()) - elParent.outerHeight() < heightPosition) ? -quaItems*heightItem-(elParent.outerHeight()/4) : standardTop;
 			topPosition = ((elParent.offset().top - $(window).scrollTop()) < heightPosition) ? standardTop : topPosition;
 			e.css('top', topPosition);
 		};
