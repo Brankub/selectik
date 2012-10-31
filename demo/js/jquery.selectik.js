@@ -269,6 +269,9 @@
 		var _changeSelectedHtml = function(dataValue, textValue, index){
 			if (index > count || index == 0) { return false;}
 			change = true;
+			$('option:eq('+$('.selected', $list).index()+')', $cselect).removeAttr('selected');
+			$('option:eq('+(index-1)+')', $cselect).attr("selected", true);
+
 			$cselect.attr('value', dataValue).change();
 			$('.selected', $list).removeClass('selected');
 			$('li:nth-child('+ index +')', $list).addClass('selected');
