@@ -1,5 +1,5 @@
 // Copyright (c) 2012 Ivan Kubrakov 
-// Selectik: a jQuery custom select plugin http://brankub.github.com/selectik/
+// Selectik a jQuery custom select plugin http://brankub.github.com/selectik/
 
 (function($) {
 	// global variables
@@ -209,7 +209,7 @@
 			var selectik = this;
             var $reset = $('input[type="reset"]', this.$cselect.parents('form'));
             if ($reset.length > 0){
-                $reset.bind('click',function(selectik){
+                $reset.bind('click',function(){
                     var index = (selectik.$selected.length > 0) ? selectik.$selected.index(): 0;
                     selectik._changeSelected($('option:eq('+index+')', selectik.$cselect));
                 });
