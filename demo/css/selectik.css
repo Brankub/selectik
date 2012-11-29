@@ -77,6 +77,7 @@
 	}
 .custom-select .custom-text,
 .custom-select.disable span.custom-text:hover{
+	overflow:			hidden;
 	height:				26px;
 	padding:			0 0 0 10px;
 	line-height:		26px;
@@ -103,7 +104,6 @@
 	background: 		-o-linear-gradient(top, #2d78b7 0%,#135f9e 100%); /* Opera 11.10+ */
 	background: 		-ms-linear-gradient(top, #2d78b7 0%,#135f9e 100%); /* IE10+ */
 	background: 		linear-gradient(top, #2d78b7 0%,#135f9e 100%); /* W3C */	
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2d78b7', endColorstr='#135f9e',GradientType=0 ); /* IE6-8 */
 	}
 .custom-select .custom-text:after{
 	font-size:			15px;
@@ -127,7 +127,6 @@
 	background: -o-linear-gradient(top, #5c96c7 0%,#104b7c 100%); /* Opera 11.10+ */
 	background: -ms-linear-gradient(top, #5c96c7 0%,#104b7c 100%); /* IE10+ */
 	background: linear-gradient(top, #5c96c7 0%,#104b7c 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5c96c7', endColorstr='#104b7c',GradientType=0 ); /* IE6-8 */
 	}
 .select-list{
 	top:				28px;

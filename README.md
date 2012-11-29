@@ -1,7 +1,28 @@
-Selectik
+Selectik 2
 ========
-Selectik is jQuery select plugin, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.
-All features of custom select and help you can find on <a href="http://brankub.github.com/selectik">demo page</a>.
+Selectik 2 is jQuery select plugin, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.
+All features of custom select and help you can find on <a href="http://brankub.github.com/selectik2">demo page</a>.
+
+**Main update of second version:**
+Now you can change/add methods for custom select. For example you need to change method of generation html for the list:
+```
+$('select').selectik(
+  {maxItems: 8}, // options 
+  {
+    _generateHtml: function(){ // changed method
+      this.$collection = this.$cselect.children();
+      var html = '';
+      for (var i = 0; i < this.$collection.length; i++){
+        var $this = $(this.$collection[i]);
+        var textOption = $this[0].text;
+        var valueOption = $this[0].value;
+        html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'">'+textOption+'</li>';
+      };
+      return html;
+    }
+  }
+); 
+```
 
 Features:
 ---------
@@ -104,5 +125,13 @@ In Selectik jQuery store a reference to the plugin of object by 'data'. In this 
 
 `$('.first select').data('selectik').enableCS();` // enable select
 
-        
+License
+-------
+
+Selectik is licensed under MIT <a href="http://www.opensource.org/licenses/MIT">MIT license</a>
+
+Copyright
+---------
+
+Copyright (c) 2012, Ivan Kubrakov <a href="mailto:kubrakov.i@gmail.com">kubrakov.i@gmail.com</a>
         

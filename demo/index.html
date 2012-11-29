@@ -5,13 +5,16 @@
 <title>Custom-select Demo</title>
 <link rel="stylesheet" type="text/css" href="css/selectik.css" />
 <link rel="stylesheet" type="text/css" href="css/demo.css" />
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<!--[if lte IE 9]>
+<link rel="stylesheet" type="text/css" href="css/ie.css" />
+<![endif]-->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="js/jquery.selectik.js"></script>
 </head>
 <body>
 	<div class="header">
-        <h1>Selectik</h1>
+        <h1>Selectik 2</h1>
         <h2 class="design">Designed & built by <b>Ivan Kubrakov</b>.</h2>
         <p><b>Selectik is jQuery plugin</b>, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.</p>
         <p><b>Features:</b></p>
@@ -24,7 +27,26 @@
         </ul>
         <p>Support browsers: <b>IE7+, Chrome, Safari, Firefox.</b></p>
         <p>All functionality you can test below in sandbox. Also you can test a speed generation of custom selects.</p>
-        <p>Latest code and issue tracker placed on <a href="https://github.com/Brankub/selectik">https://github.com/Brankub/selectik</a>. If you will find problems in usage, please put an issue on <a href="https://github.com/Brankub/selectik/issues">GitHub</a></p>
+        <p>Latest code and issue tracker placed on <a href="https://github.com/Brankub/selectik2">https://github.com/Brankub/selectik2</a>. If you will find problems in usage, please put an issue in <a href="https://github.com/Brankub/selectik/issues">GitHub</a></p>
+        <p class="main_update"><b>Main update of second version:</b></p>
+        <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>
+        <p class="code">
+        $('select').selectik({maxItems: 8}, <br/>
+        	<span>{</span><br/>
+				<span><span>_generateHtml: function(){</span></span><br/>
+					<span><span><span>this.$collection = this.$cselect.children();</span></span></span><br/>
+					<span><span><span>var html = '';</span></span></span><br/>
+					<span><span><span>for (var i = 0; i < this.$collection.length; i++){</span></span></span><br/>
+						<span><span><span><span>var $this = $(this.$collection[i]);</span></span></span></span><br/>
+						<span><span><span><span>var textOption = $this[0].text;</span></span></span></span><br/>
+						<span><span><span><span>var valueOption = $this[0].value;</span></span></span></span><br/>
+						<span><span><span><span>html += '&lt;li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'"&gt;'+textOption+'&lt;/li&gt;';</span></span></span></span><br/>
+					<span><span><span>};</span></span></span><br/>
+					<span><span><span>return html;</span></span></span><br/>
+				<span><span>}</span></span><br/>
+			<span>}</span><br/>
+		);
+        </p>
     </div>
 	<div class="main clearfix">    	
         <div class="select-column">
@@ -51,7 +73,7 @@
                         </form>
                    </div>
                    <div class="second select-block">
-                       <select >
+                       <select>
 							<option value="Choose hero">Choose hero</option>
                             <option value="Spider Man">Spider Man</option>
                             <option value="Wolverine">Wolverine</option>
@@ -203,7 +225,21 @@
     <script type="text/javascript">
     $(document).ready(function() {
         // attach the plugin to all selects
-        $('.selects select').selectik({ maxItems: 8});
+		
+        $('.selects select').selectik({maxItems: 8}, {
+				_generateHtml: function(){
+					this.$collection = this.$cselect.children();
+					var html = '';
+					for (var i = 0; i < this.$collection.length; i++){
+						var $this = $(this.$collection[i]);
+						var textOption = $this[0].text;
+						var valueOption = $this[0].value;
+						html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'">'+textOption+'</li>';
+					};
+					return html;
+				}
+			}
+		);
 
         // only for demo
         newSelect();
