@@ -1,9 +1,9 @@
-Selectik 2
+Selectik 
 ========
-Selectik 2 is jQuery select plugin, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.
-All features of custom select and help you can find on <a href="http://brankub.github.com/selectik2">demo page</a>.
+Selectik  is jQuery select plugin, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.
+All features of custom select and help you can find on <a href="http://brankub.github.com/selectik">demo page</a>.
 
-**Main update of second version:**
+**Main update:**
 Now you can change/add methods for custom select. For example you need to change method of generation html for the list:
 ```
 $('select').selectik(
