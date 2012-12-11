@@ -46,7 +46,8 @@
 	display:			inline-block;
 	}
 .custom-select li{
-	cursor:				pointer
+	cursor:				pointer;
+	min-height:			25px;
 	}
 .select-scroll{
 	position:			absolute;
