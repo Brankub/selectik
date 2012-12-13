@@ -83,8 +83,8 @@ Plugin parametrs
 + **Speed of animation (speedAnimation)** - speed of show/hide animation in milliseconds. Default value - '200'.
 
 + **Smart positioning**. Default value - 'true'.
-                                                                                                      - 
-Example of using parametrs:
+                                                                                                      
+- Example of using parametrs:
 ```
 $('select').selectik({
 width: 300,
