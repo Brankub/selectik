@@ -28,7 +28,7 @@
         <p>Support browsers: <b>IE7+, Chrome, Safari, Firefox.</b></p>
         <p>All functionality you can test below in sandbox. Also you can test a speed generation of custom selects.</p>
         <p>Latest code and issue tracker placed on <a href="https://github.com/Brankub/selectik">https://github.com/Brankub/selectik</a>. If you will find problems in usage, please put an issue in <a href="https://github.com/Brankub/selectik/issues">GitHub</a></p>
-        <p class="main_update"><b>Main update of second version:</b></p>
+        <p class="main_update"><b>Main update:</b></p>
         <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>
         <p class="code">
         $('select').selectik({maxItems: 8}, <br/>
@@ -134,6 +134,7 @@
                        <h3>Show/hide <ins>second</ins> list</h3>
                        <input type="button" onClick="$('.second select').data('selectik').showCS();" value="Show" />
                        <input type="button" onClick="$('.second select').data('selectik').hideCS();" value="Hide" />
+
                        <h3>Set new 'selected' (active) option for <ins>first</ins> select</h3>
                        <b class="l-text">Index number option</b>
                        <input type="text" id="number" value="1" type="number" min="1" class="l-input" /><input type="button" onClick="$('.first select').data('selectik').changeCS({index: $('#number').val()});" value="Set" /><br/><br/>
@@ -182,6 +183,7 @@
             <p><b>Maximum items (maxItems)</b> - you can put max quantity of options that should be visible. If quantity of options will be bigger plugin will put scroll. If value of this paramentr will be '0', all options will be visible. Default value - '0'.</p>
             <p><b>Type of scroll (customScroll)</b> - choose type of scroll (custom or original). 1 - custom, 0 - original. Default value - '1'.</p>
             <p><b>Speed of animation (speedAnimation)</b> - speed of show/hide animation in milliseconds. Default value - '200'.</p>
+            <p><b>Smart positioning</b>.  Default value - 'true'.</p>
             <b>Example of using parametrs:</b>
             <p class="code">
             	$('select').selectik({<br/>
@@ -189,6 +191,7 @@
                 <span>maxItems: 5,</span><br/>
                 <span>customScroll: 0,</span><br/>
                 <span>speedAnimation: 100</span><br/>
+                <span>smartPosition: false</span><br/>
                 });
             </p>
             <h1>Plugin API</h1>
@@ -240,6 +243,7 @@
 				}
 			}
 		);
+
         // only for demo
         newSelect();
     });
