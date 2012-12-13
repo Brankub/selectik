@@ -81,6 +81,8 @@ Plugin parametrs
 + **Type of scroll (customScroll)** - choose type of scroll (custom or original). 1 - custom, 0 - original. Default value - '1'.
 
 + **Speed of animation (speedAnimation)** - speed of show/hide animation in milliseconds. Default value - '200'.
+
++ **Smart positioning**. Default value - 'true'.
                                                                                                       - 
 Example of using parametrs:
 ```
@@ -88,7 +90,8 @@ $('select').selectik({
 width: 300,
 maxItems: 5,
 customScroll: 0,
-speedAnimation: 100
+speedAnimation: 100,
+smartPosition: false
 });
 ```
 

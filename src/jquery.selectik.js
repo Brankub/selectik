@@ -17,7 +17,8 @@
             width: 0,
             maxItems: 0,
             customScroll: 1,
-            speedAnimation:200
+            speedAnimation:200,
+			smartPosition: true
         }, options || {});
     };	
 	
@@ -300,6 +301,7 @@
 		},
 		// public method: postion of list
 		positionCS: function(){
+			if (!this.config.smartPosition) return;
 			elParent = this.$listContainer.parent();
 			var heightPosition = (this.scrollL) ? this.config.maxItems*this.heightItem : this.count*this.heightItem;
 			var quaItems = (this.scrollL) ? this.config.maxItems : this.count;
