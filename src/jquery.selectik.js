@@ -218,7 +218,7 @@
 
 			// change on original select
 			this.$cselect.bind('change', function(){
-				 if (selectik.change) { selectik.change = false; return false; }
+				 if (selectik.change) { selectik.change = false; return true; }
 				 selectik._changeSelected($('option:selected', $(this)));
 			});
 
