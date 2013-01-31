@@ -189,9 +189,10 @@
 			if (indexEl < 0 || indexEl == this.count) { return; }
 			this.topShift = (indexEl > this.count-this.config.maxItems) ? this.heightList-this.heightContainer : this.heightItem*indexEl;
 			$('.selected', this.$list).removeClass('selected');
-			$('li:nth-child('+(indexEl+1)+')', this.$list).addClass('selected');
+			var $selectedLi = $('li:nth-child('+(indexEl+1)+')', this.$list);
+			$selectedLi.addClass('selected');
 			if (openList && selectControl){
-				this.$text.text($('li:nth-child('+(indexEl-1)+')', this.$list).data('value'));
+				this.$text.text($selectedLi.data('value'));
 			}
 			if (!this.scrollL) { return; }
 			this._shiftHelper(-this.topShift);
@@ -261,22 +262,24 @@
 		_changeSelectedHtml: function(dataValue, textValue, index){
 			if (index > this.count || index == 0) { return false;}
 			this.change = true;
-			$('option:eq('+$('.selected', this.$list).index()+')', this.$cselect).removeAttr('selected');
+			var $selected = $('.selected', this.$list);
+			$('option:eq('+$selected.index()+')', this.$cselect).removeAttr('selected');
 			$('option:eq('+(index-1)+')', this.$cselect).attr("selected", true);
 
 			this.$cselect.attr('value', dataValue).change();
-			$('.selected', this.$list).removeClass('selected');
+			$selected.removeClass('selected');
 			$('li:nth-child('+ index +')', this.$list).addClass('selected');
 			this.$text.text(textValue);
 		},
 		// private method: show/hdie list
 		_fadeList: function(out, text){
-			if ($('.'+this.config.containerClass+'.open_list').length == 1){
-				$('.'+this.config.containerClass+'.open_list').children('select').data('selectik').hideCS();	
+			var $openList = $('.'+this.config.containerClass+'.open_list');
+			if ($openList.length == 1){
+				$openList.children('select').data('selectik').hideCS();	
 				return;
 			}		
             if (!text){
-                $('.'+this.config.containerClass+'.open_list').children('.select-list').stop(true, true).fadeOut(this.config.speedAnimation).parent().toggleClass('open_list');
+                $openList.children('.select-list').stop(true, true).fadeOut(this.config.speedAnimation).parent().toggleClass('open_list');
                 if (out){ return; }
             }
 			openList = false;
@@ -305,8 +308,10 @@
 			elParent = this.$listContainer.parent();
 			var heightPosition = (this.scrollL) ? this.config.maxItems*this.heightItem : this.count*this.heightItem;
 			var quaItems = (this.scrollL) ? this.config.maxItems : this.count;
-			var topPosition = ($(window).height() - (elParent.offset().top - $(window).scrollTop()) - elParent.outerHeight() < heightPosition) ? -quaItems*this.heightItem-(elParent.outerHeight()/4) : this.standardTop;
-			this.topPosition = ((elParent.offset().top - $(window).scrollTop()) < this.heightPosition) ? this.standardTop : topPosition;
+			var $window = $(window);
+			var widnowScrollTop = $window.scrollTop();
+			var topPosition = ($window.height() - (elParent.offset().top - widnowScrollTop) - elParent.outerHeight() < heightPosition) ? -quaItems*this.heightItem-(elParent.outerHeight()/4) : this.standardTop;
+			this.topPosition = ((elParent.offset().top - widnowScrollTop) < heightPosition && ($('html').height() - elParent.offset().top) > heightPosition) ? this.standardTop : topPosition;
 			this.$listContainer.css('top', this.topPosition);
 		},
 		// public method: refresh list
@@ -315,9 +320,10 @@
 	    },
 		// public method: change active element
 		changeCS: function(val) {
-			var index = (val.index > 0) ? val.index : $('option[value="'+val.value+'"]', this.$cselect).index()+1;
-			var dataValue = $('option:nth-child('+(index)+')', this.$cselect).attr('value');
-			var textValue = $('option:nth-child('+(index)+')', this.$cselect).text()
+			var index = (val.index > 0) ? val.index : $('option[value="'+val.value+'"]', this.$cselect).index() + 1;
+			var $option = $('option:nth-child('+(index)+')', this.$cselect);
+			var dataValue = $option.attr('value');
+			var textValue = $option.text()
 			this._changeSelectedHtml(dataValue, textValue, index);
 		},
 		// public method: disable list
@@ -370,16 +376,19 @@
 	// global handlers
 	$(window).resize(function(){
         if (openList){
-            if (!$('.open_list').length > 0) { return; }
-            $('.open_list').children('select').data('selectik').positionCS($('.select-list:visible'));
+			var $list = $('.open_list');
+            if (!$list.length > 0) { return; }
+			
+            $list.children('select').data('selectik').positionCS($('.select-list:visible'));
         }
 	});
 	$(document).bind('click', function(e){
 		if (trigger) { trigger = false; return; }
 		if (openList){
 			openList = false;
-			if ($('.open_list').length > 0){
-				var $select = $('.open_list').children('select');
+			var $list = $('.open_list');
+			if ($list.length > 0){
+				var $select = $list.children('select');
 				$select.data('selectik').hideCS();
 			}
 		}
