@@ -95,12 +95,8 @@
 			var html = '';
 			for (var i = 0; i < this.$collection.length; i++){
 				var $this = $(this.$collection[i]);
-				var textOption = $this[0].text;
-                		var valueOption = $this[0].value;
-				if($this.attr('data-selectik'))
-				{
-					textOption = $this.attr('data-selectik');
-				}
+				var textOption = ($this.attr('data-selectik')) ? $this.attr('data-selectik') : $this[0].text;
+				var valueOption = $this[0].value;
 				html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+valueOption+'">'+textOption+'</li>';
 			};
 			return html;
