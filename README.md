@@ -23,28 +23,6 @@ Added HTML support in custom list item. Just add attribute to options (data-sele
 ...
 ```
 
-Change/add methods:
------------------
-Now you can change/add methods for custom select. For example you need to change method of generation html for the list:
-```
-$('select').selectik(
-  {maxItems: 8}, // options 
-  {
-    _generateHtml: function(){ // changed method
-      this.$collection = this.$cselect.children();
-      var html = '';
-      for (var i = 0; i < this.$collection.length; i++){
-        var $this = $(this.$collection[i]);
-        var textOption = $this[0].text;
-        var valueOption = $this[0].value;
-        html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'">'+textOption+'</li>';
-      };
-      return html;
-    }
-  }
-); 
-```
-
 Usage
 -----
 First include in html head tag stylesheet for custom selects (you can customize demo CSS file), jQuery, jQuery mousewheel plugin (included in project), and Selectik .js file:
@@ -134,6 +112,29 @@ In Selectik jQuery store a reference to the plugin of object by 'data'. In this 
 `$('.first select').data('selectik').disableCS();` // disable select
 
 `$('.first select').data('selectik').enableCS();` // enable select
+
+
+Change/add methods:
+-----------------
+Now you can change/add methods for custom select. For example you need to change method of generation html for the list:
+```
+$('select').selectik(
+  {maxItems: 8}, // options 
+  {
+    _generateHtml: function(){ // changed method
+      this.$collection = this.$cselect.children();
+      var html = '';
+      for (var i = 0; i < this.$collection.length; i++){
+        var $this = $(this.$collection[i]);
+        var textOption = $this[0].text;
+        var valueOption = $this[0].value;
+        html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'">'+textOption+'</li>';
+      };
+      return html;
+    }
+  }
+); 
+```
 
 Support browsers:
 -----------------
