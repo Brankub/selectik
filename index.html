@@ -28,8 +28,15 @@
         <p>Support browsers: <b>IE7+, Chrome, Safari, Firefox.</b></p>
         <p>All functionality you can test below in sandbox. Also you can test a speed generation of custom selects.</p>
         <p>Latest code and issue tracker placed on <a href="https://github.com/Brankub/selectik">https://github.com/Brankub/selectik</a>. If you will find problems in usage, please put an issue in <a href="https://github.com/Brankub/selectik/issues">GitHub</a></p>
-        <p class="main_update"><b>Main update:</b></p>
-        <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>
+        <p class="main_update"><b>Updates:</b></p>
+        <p>Added HTML support in custom list item. Just add attribute to options (data-selectik) with HTML version:</p>        
+        <p class="code">
+        ...<br/>
+        &lt;option value="[some value]" data-selectik="Spider &lt;i&gt;man&lt;/i&gt;"&gt;Spider man&lt;option&gt;<br/>
+        ...
+        </p>
+        <h2>Change/add methods</h2>
+        <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>        
         <p class="code">
         $('select').selectik({maxItems: 8}, <br/>
         	<span>{</span><br/>
@@ -59,7 +66,7 @@
                         <form>
                             <select>
                                 <option value="0">Choose hero</option>
-                                <option value="1">Spider Man</option>
+                                <option value="1" data-selectik="Spider <i>Man</i>">Spider Man</option>
                                 <option value="2">Wolverine</option>
                                 <option value="3">Captain America</option>
                                 <option value="X-Men">X-Men</option>
@@ -235,10 +242,8 @@
 					var html = '';
 					for (var i = 0; i < this.$collection.length; i++){
 						var $this = $(this.$collection[i]);
-						var textOption = $this[0].text;
-						var valueOption = $this[0].value;
-						html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +' new" data-value="'+valueOption+'">'+textOption+'</li>';
-					};
+						html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+$this[0].value+'">'+($this.data('selectik') ? $this.data('selectik') : $this[0].text)+'</li>';
+					 };
 					return html;
 				}
 			}
