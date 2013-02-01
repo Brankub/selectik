@@ -95,10 +95,8 @@
 			var html = '';
 			for (var i = 0; i < this.$collection.length; i++){
 				var $this = $(this.$collection[i]);
-				var textOption = $this[0].text;
-                var valueOption = $this[0].value;
-				html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+valueOption+'">'+textOption+'</li>';
-			};
+				html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+$this[0].value+'">'+($this.data('selectik') ? $this.data('selectik') : $this[0].text)+'</li>';
+			 };
 			return html;
 		},
 		_getLength: function(e){

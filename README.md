@@ -3,7 +3,28 @@ Selectik
 Selectik  is jQuery select plugin, easy use, cross-browser alternative to the standard select form element which can be customised with CSS.
 All features of custom select and help you can find on <a href="http://brankub.github.com/selectik">demo page</a>.
 
-**Main update:**
+Features:
+---------
+* TAB key control
+* original select key control
+* mouse wheel control
+* search by first letter
+* custom/default scroll
+* smart positioning
+* auto/cutsom width
+
+**Updates:**
+
+Added HTML support in custom list item. Just add attribute to options (data-selectik) with HTML version:
+
+```
+...
+<option value="[some value]" data-selectik="Spider <i>man</i>">Spider man<option>
+...
+```
+
+Change/add methods:
+-----------------
 Now you can change/add methods for custom select. For example you need to change method of generation html for the list:
 ```
 $('select').selectik(
@@ -23,20 +44,6 @@ $('select').selectik(
   }
 ); 
 ```
-
-Features:
----------
-* TAB key control
-* original select key control
-* mouse wheel control
-* search by first letter
-* custom/default scroll
-* smart positioning
-* auto/cutsom width
-
-Support browsers:
------------------
-IE7+, Chrome, Safari, Firefox.
 
 Usage
 -----
@@ -127,6 +134,10 @@ In Selectik jQuery store a reference to the plugin of object by 'data'. In this 
 `$('.first select').data('selectik').disableCS();` // disable select
 
 `$('.first select').data('selectik').enableCS();` // enable select
+
+Support browsers:
+-----------------
+IE7+, Chrome, Safari, Firefox.
 
 License
 -------
