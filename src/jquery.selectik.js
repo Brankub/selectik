@@ -94,8 +94,8 @@
 			this.$collection = this.$cselect.children();
 			var html = '';
 			for (var i = 0; i < this.$collection.length; i++){
-        			var $this = $(this.$collection[i]);
-			        html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+$this[0].value+'">'+($this.data('selectik') ? $this.data('selectik') : $this[0].text)+'</li>';
+				var $this = $(this.$collection[i]);
+				html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+$this[0].value+'">'+($this.data('selectik') ? $this.data('selectik') : $this[0].text)+'</li>';
 			 };
 			return html;
 		},
@@ -233,6 +233,7 @@
                 selectik.$container.addClass('active');
             });
             this.$cselect.bind('blur', function(){
+				selectik.hideCS(true);
                 selectik.$container.removeClass('active');
             });
 
@@ -288,10 +289,10 @@
 			setTimeout(function(){ openList = true; }, selectik.config.speedAnimation);
 		},
 		// public method: hide list
-		hideCS: function(){
+		hideCS: function(next){
 			this.$listContainer.fadeOut(this.config.speedAnimation);
 			this.$container.removeClass('open_list');
-            this.$cselect.focus();
+            if (!next) this.$cselect.focus();
 			openList = true;		
 		},
 		// public method: show list
