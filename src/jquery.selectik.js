@@ -154,9 +154,12 @@
 				selectik._shiftHelper(shiftL);
 				return false;
 			});
+			
+			// bind scroll on mousedown selecting
+	        this.$text.on('mousedown', function(e){ selectik._draggable(e, true); });
 
 			// draggable handler and calculate
-	        this.$scroll.on('mousedown', function(e){ selectik._draggable(e, true); });
+	        this.$scroll.on('mousedown', function(e){ mouseTrigger = false; selectik._draggable(e, true); });
 			$(document).on('mouseup', function(e){ selectik._draggable(e, false); });
 		},
 		// private method: draggable for scroll
@@ -167,9 +170,21 @@
 				if (e.preventDefault()) { e.preventDefault(); }
 				var startPosition = parseInt(selectik.$scroll.css('top'));
 				var helper = e.clientY;
+
 				$(document).bind('mousemove', function(e){
-					var newPosition = (helper - e.clientY) - startPosition;
-					selectik._shiftHelper(newPosition*selectik.relating);
+					if (mouseTrigger){
+						var listTopPosition = selectik.$text.parent().offset().top;
+						var listHeight = selectik.$list.outerHeight();
+						var cursorPosition = listHeight - (e.clientY - (listTopPosition - $(window).scrollTop()));
+						if (cursorPosition < 0 || cursorPosition > listHeight){
+							var deltaY = (cursorPosition < 0) ? -1 : 1;
+							var shiftL = parseInt(selectik.$list.css('top'))+(deltaY*selectik.heightItem);
+							selectik._shiftHelper(shiftL);
+						}
+					}else{
+						var newPosition = (helper - e.clientY) - startPosition;
+						selectik._shiftHelper(newPosition*selectik.relating);
+					}
 				});
 			}else{
 				$(document).unbind('mousemove');
