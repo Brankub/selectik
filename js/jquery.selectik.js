@@ -6,6 +6,7 @@
 	var openList = false;
 	var selectControl = false;
 	var trigger = false;
+	var mouseTrigger = false;
 
 	$.browser.mobile = (/android|iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
 	$.browser.operamini = Object.prototype.toString.call(window.operamini) === "[object OperaMini]";
@@ -222,10 +223,21 @@
 			});
 
 			// click on select
-			this.$text.bind('click', function(){
-	        	if( selectik.$container.hasClass('disable')) { return false; }
+			this.$text.bind('click', function(e){
+	        	if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
 				selectik.$cselect.focus();
 				selectik._fadeList(false, true);
+			});
+			
+			// mouse down/up
+			this.$text.bind('mousedown', function(){
+				mouseTrigger = true;
+				selectik._fadeList(false, true);
+			});
+			this.$listContainer.on('mouseup', 'li',function(e){
+				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));				
+				selectik.hideCS(true);
+				mouseTrigger = false;
 			});
 
             // active class
@@ -233,6 +245,7 @@
                 selectik.$container.addClass('active');
             });
             this.$cselect.bind('blur', function(){
+				if (mouseTrigger) return;
 				selectik.hideCS(true);
                 selectik.$container.removeClass('active');
             });
