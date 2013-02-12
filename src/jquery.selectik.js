@@ -171,13 +171,17 @@
 				var startPosition = parseInt(selectik.$scroll.css('top'));
 				var helper = e.clientY;
 
+				var textHeight = selectik.$text.outerHeight();
 				$(document).bind('mousemove', function(e){
 					if (mouseTrigger){
-						var listTopPosition = selectik.$text.parent().offset().top;
+						var listTopPosition = selectik.$list.parent().offset().top;
 						var listHeight = selectik.$list.outerHeight();
-						var cursorPosition = listHeight - (e.clientY - (listTopPosition - $(window).scrollTop()));
-						if (cursorPosition < 0 || cursorPosition > listHeight){
-							var deltaY = (cursorPosition < 0) ? -1 : 1;
+						var direction = (selectik.topPosition > 0) ? -1 : 1;
+						var difference = (selectik.topPosition > 0) ? textHeight : 0;		
+						var cursorPosition = (e.clientY - (listTopPosition - difference - $(window).scrollTop()));
+						
+						if (cursorPosition < 0 || cursorPosition > (listHeight + textHeight)){
+							var deltaY = (cursorPosition < 0) ? 1 : -1;
 							var shiftL = parseInt(selectik.$list.css('top'))+(deltaY*selectik.heightItem);
 							selectik._shiftHelper(shiftL);
 						}
