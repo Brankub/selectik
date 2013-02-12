@@ -10,6 +10,7 @@
     left:-2px;
     z-index: -10;
 	outline:none;
+	-webkit-appearance: none;
 	}
 .select-list{
 	position:			absolute;
