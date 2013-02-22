@@ -249,14 +249,24 @@
 			});
 			
 			// mouse down/up
+			var mouseDown = false;
 			this.$text.bind('mousedown', function(){
-				mouseTrigger = true;
-				selectik._fadeList(false, true);
+				mouseDown = true;
+				setTimeout(function(){
+					if (mouseDown){
+						mouseTrigger = true;
+						selectik._fadeList(false, true);
+					}
+				}, 300);
+			});
+			this.$text.bind('mouseup', function(){
+				mouseDown = false;
 			});
 			this.$listContainer.on('mouseup', 'li',function(e){
 				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));				
 				selectik.hideCS(true);
 				mouseTrigger = false;
+				selectik.$cselect.focus();
 			});
 
             // active class
@@ -414,6 +424,7 @@
         }
 	});
 	$(document).bind('click', function(e){
+
 		if (trigger) { trigger = false; return; }
 		if (openList){
 			openList = false;
