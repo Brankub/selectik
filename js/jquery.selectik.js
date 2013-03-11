@@ -7,9 +7,10 @@
 	var selectControl = false;
 	var trigger = false;
 	var mouseTrigger = false;
-
-	$.browser.mobile = (/android|iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
-	$.browser.operamini = Object.prototype.toString.call(window.operamini) === "[object OperaMini]";
+	var isMobile = (/android|iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
+	var isOpera = (/opera/i.test(navigator.userAgent.toLowerCase()));
+	var isIE = (/msie/i.test(navigator.userAgent.toLowerCase()));
+	var isOperaMini  = Object.prototype.toString.call(window.operamini) === "[object OperaMini]";
 	
 	Selectik = function(options){
 		// merge options
@@ -280,14 +281,14 @@
             });
 
 			this.$cselect.bind('keyup', function(e) { selectik._keysHandlers(e); });
-			if ($.browser.opera){
+			if (isOpera){
 				selectik.$cselect.bind('keydown', function() { trigger = true; });
 			};
 		},
         // private method: handlers on keys
         _keysHandlers: function(e){
             if (e.keyCode == 13 && this.$listContainer.is(':visible')) { this._fadeList(true, false); }
-            if (!$.browser.msie){
+            if (!isIE){
                 if (e.keyCode == 27 && this.$listContainer.is(':visible')) { this._fadeList(true, true); }
             }
             this.$cselect.change();
@@ -304,10 +305,10 @@
 			if (index > this.count || index == 0) { return false;}
 			this.change = true;
 			var $selected = $('.selected', this.$list);
-			$('option:eq('+$selected.index()+')', this.$cselect).removeAttr('selected');
-			$('option:eq('+(index-1)+')', this.$cselect).attr("selected", true);
+			$('option:eq('+$selected.index()+')', this.$cselect).prop('selected', false); //
+			$('option:eq('+(index-1)+')', this.$cselect).prop('selected', true);
 
-			this.$cselect.attr('value', dataValue).change();
+			this.$cselect.prop('value', dataValue).change();
 			$selected.removeClass('selected');
 			$('li:nth-child('+ index +')', this.$list).addClass('selected');
 			this.$text.text(textValue);
@@ -395,7 +396,7 @@
 	};
 
 	$.fn.selectik = function(options, methods) {
-		if ($.browser.mobile || $.browser.operamini) return;
+		if (isMobile || isOperaMini) return;
         return this.each(function() {
             if ($('optgroup', this).length > 0 || $(this).attr('multiple') == 'multiple') { return; }
             if (undefined == $(this).data('Selectik')) {
