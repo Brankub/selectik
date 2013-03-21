@@ -52,7 +52,7 @@
 		// private method: generate list html
 		_getList: function(e){
 			this.count = this.cselect.length;
-			if (e.refreshSelect){ $('ul', this.$container).remove(); }
+			if (e.refreshSelect){ $('.select-list', this.$container).remove(); }
 
 			// loop html
 			var html = this._generateHtml();
@@ -66,8 +66,10 @@
 
 			// check if first time or refresh
 			if (e.refreshSelect){
-				html = '<ul>'+html+'</ul>';
-				$(html).prependTo($('.select-list', this.$container));
+				html = '<div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
+				$(html).prependTo(this.$container);
+//				html = '<ul>'+html+'</ul>';
+	//			$(html).prependTo($('.select-list', this.$container));
 			}else{
 				html = '<span class="custom-text">'+this.$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo(this.$container);
@@ -105,7 +107,7 @@
 			if (!e.refreshSelect){ this.heightItem = $('li:nth-child(1)', this.$list).outerHeight(); }
 
 			// check if count of options more then max
-		  	if (this.count < this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); return; }
+		  	if (this.count < this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); this.scrollL = false; return; }
 			this.scrollL = true;
            	this.heightList = this.heightItem*this.count;
 			this.heightContainer = this.heightItem*this.config.maxItems;
