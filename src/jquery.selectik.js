@@ -20,7 +20,8 @@
             maxItems: 0,
             customScroll: 1,
             speedAnimation:200,
-			smartPosition: true
+            smartPosition: true,
+            cssStyleWidth: false /* if set to true treat width like plain css width, i.e. do no preprocess and substract paddings */
         }, options || {});
     };	
 	
@@ -386,13 +387,14 @@
         },
 		// public method: width of select
 		setWidthCS: function(width){
+			var cssStyleWidth = this.config.cssStyleWidth; /* we'll ignore any paddings if this is set to true */
 			//Paddings may has element or/and it's parent
 			$.each([this.$list,this.$text],function() {
 				var $parent = $(this).parent(),
 				parentPaddings  = $parent.outerWidth() - $parent.width(),
 				elementPaddings = $(this).outerWidth() - $(this).width(),
 				paddings = parentPaddings + elementPaddings;
-				$(this).css('width', width - paddings);
+				$(this).css('width', cssStyleWidth ? width : width - paddings);
 			});
 		}		
 	};
