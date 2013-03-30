@@ -20,7 +20,8 @@
             maxItems: 0,
             customScroll: 1,
             speedAnimation:200,
-			smartPosition: true
+            smartPosition: true,
+            cssStyleWidth: false /* if set to true treat width like plain css width, i.e. do no preprocess and substract paddings */
         }, options || {});
     };	
 	
@@ -245,31 +246,10 @@
 			});
 
 			// click on select
-			this.$text.bind('click', function(e){
-	        	if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
+			this.$text.bind('click', function(){
+	        	if( selectik.$container.hasClass('disable')) { return false; }
 				selectik.$cselect.focus();
 				selectik._fadeList(false, true);
-			});
-			
-			// mouse down/up
-			var mouseDown = false;
-			this.$text.bind('mousedown', function(){
-				mouseDown = true;
-				setTimeout(function(){
-					if (mouseDown){
-						mouseTrigger = true;
-						selectik._fadeList(false, true);
-					}
-				}, 300);
-			});
-			this.$text.bind('mouseup', function(){
-				mouseDown = false;
-			});
-			this.$listContainer.on('mouseup', 'li',function(e){
-				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));				
-				selectik.hideCS(true);
-				mouseTrigger = false;
-				selectik.$cselect.focus();
 			});
 
             // active class
@@ -277,7 +257,6 @@
                 selectik.$container.addClass('active');
             });
             this.$cselect.bind('blur', function(){
-				if (mouseTrigger) return;
 				selectik.hideCS(true);
                 selectik.$container.removeClass('active');
             });
@@ -386,13 +365,14 @@
         },
 		// public method: width of select
 		setWidthCS: function(width){
+			var cssStyleWidth = this.config.cssStyleWidth; /* we'll ignore any paddings if this is set to true */
 			//Paddings may has element or/and it's parent
 			$.each([this.$list,this.$text],function() {
 				var $parent = $(this).parent(),
 				parentPaddings  = $parent.outerWidth() - $parent.width(),
 				elementPaddings = $(this).outerWidth() - $(this).width(),
 				paddings = parentPaddings + elementPaddings;
-				$(this).css('width', width - paddings);
+				$(this).css('width', cssStyleWidth ? width : width - paddings);
 			});
 		}		
 	};
