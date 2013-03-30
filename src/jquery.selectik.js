@@ -246,31 +246,10 @@
 			});
 
 			// click on select
-			this.$text.bind('click', function(e){
-	        	if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
+			this.$text.bind('click', function(){
+	        	if( selectik.$container.hasClass('disable')) { return false; }
 				selectik.$cselect.focus();
 				selectik._fadeList(false, true);
-			});
-			
-			// mouse down/up
-			var mouseDown = false;
-			this.$text.bind('mousedown', function(){
-				mouseDown = true;
-				setTimeout(function(){
-					if (mouseDown){
-						mouseTrigger = true;
-						selectik._fadeList(false, true);
-					}
-				}, 300);
-			});
-			this.$text.bind('mouseup', function(){
-				mouseDown = false;
-			});
-			this.$listContainer.on('mouseup', 'li',function(e){
-				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));				
-				selectik.hideCS(true);
-				mouseTrigger = false;
-				selectik.$cselect.focus();
 			});
 
             // active class
@@ -278,7 +257,6 @@
                 selectik.$container.addClass('active');
             });
             this.$cselect.bind('blur', function(){
-				if (mouseTrigger) return;
 				selectik.hideCS(true);
                 selectik.$container.removeClass('active');
             });
