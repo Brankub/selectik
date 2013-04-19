@@ -7,119 +7,137 @@
 	var selectControl = false;
 	var trigger = false;
 	var mouseTrigger = false;
-	var isMobile = (/android|iphone|ipad|ipod|android/i.test(navigator.userAgent.toLowerCase()));
-	var isOpera = (/opera/i.test(navigator.userAgent.toLowerCase()));
-	var isIE = (/msie/i.test(navigator.userAgent.toLowerCase()));
-	var isOperaMini  = Object.prototype.toString.call(window.operamini) === "[object OperaMini]";
+	var isMobile = ( /android|iphone|ipad|ipod|android/i.test( navigator.userAgent.toLowerCase() ) );
+	var isOpera = ( /opera/i.test( navigator.userAgent.toLowerCase() ) );
+	var isIE = ( /msie/i.test( navigator.userAgent.toLowerCase() ) );
+	var isOperaMini  = Object.prototype.toString.call( window.operamini ) === "[object OperaMini]";
 	
-	Selectik = function(options){
+	Selectik = function( options ){
 		// merge options
-        this.config = $.extend(true, {
+		this.config = $.extend( true, {
 			containerClass: 'custom-select',
-            width: 0,
-            maxItems: 0,
-            customScroll: 1,
-            speedAnimation:200,
+			containerClassCopyFromSelect: false,
+			width: 0,
+			maxItems: 0,
+			customScroll: 1,
+			speedAnimation:200,
 			smartPosition: true
-        }, options || {});
-    };	
+		}, options || {} );
+	};
 	
-    Selectik.prototype = {
-        _init: function(element){
-			this.$cselect = $(element);
-            this.cselect = element;
+	Selectik.prototype = {
+		_init: function( element ) {
+			this.$cselect = $( element );
+			this.cselect = element;
 			this.scrollL = false;
 			this.change = false;
-			
+
 			//Check select width
 			//Select width is inconsistent in different browser,
 			//so we wrap select by inline element and get it's width
-			if( this.config.width == 0 ) {
-			    this.$cselect.wrap('<span/>');
-			    this.config.width = this.$cselect.parent().width();
-			    this.$cselect.parent().replaceWith( this.$cselect );
+			if( this.config.width === 0 ) {
+				this.$cselect.wrap( '<span/>' );
+				this.config.width = this.$cselect.parent().width();
+				this.$cselect.parent().replaceWith( this.$cselect );
 			}
-			
+
 			this._generateContainer();
 			this._handlers();
 		},
 		// private method: wrap selects in divs and fire html generator
-		_generateContainer: function(){
-			this.$cselect.wrap('<div class="'+this.config.containerClass+'"></div>'); 
-			this.$container = this.$cselect.parent(); 
-			this._getList({ refreshHtml: false }); 
+		_generateContainer: function() {
+			var wrapperClasses = [];
+			if ( this.config.containerClassCopyFromSelect && this.cselect.className.length > 0 ) {
+				wrapperClasses = this.cselect.className.split( ' ' );
+				var testConfigClass = wrapperClasses.indexOf( this.config.containerClass );
+
+				if ( testConfigClass !== -1 ) {
+					wrapperClasses.splice( testConfigClass, 1 );
+				}
+			}
+
+			wrapperClasses.push( this.config.containerClass );
+
+			this.$cselect.wrap( '<div class="' + wrapperClasses.join( ' ' ) + '"></div>' );
+			this.$container = this.$cselect.parent();
+			this._getList( { refreshHtml: false } );
 		},
 		// private method: generate list html
-		_getList: function(e){
+		_getList: function( e ) {
 			this.count = this.cselect.length;
-			if (e.refreshSelect){ $('.select-list', this.$container).remove(); }
+			if (e.refreshSelect){ $( '.select-list', this.$container ).remove(); }
 
 			// loop html
 			var html = this._generateHtml();
 
 			// html for control
-			var scrollHtml = (this.config.maxItems > 0 && this.config.customScroll == 1) ? '<div class="select-scroll"><span class="scroll-drag"><!-- --></span></div>' : '';
-			var scrollClass = (this.config.customScroll == 1) ? 'custom-scroll' : 'default-scroll';
+			var scrollHtml = ( this.config.maxItems > 0 && this.config.customScroll == 1 ) ? '<div class="select-scroll"><span class="scroll-drag"><!-- --></span></div>' : '';
+			var scrollClass = ( this.config.customScroll == 1 ) ? 'custom-scroll' : 'default-scroll';
 
 			// selected
-			this.$selected = $('option:selected', this.$cselect);
+			this.$selected = $( 'option:selected', this.$cselect );
 
 			// check if first time or refresh
-			if (e.refreshSelect){
-				html = '<div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
-				$(html).prependTo(this.$container);
+			if ( e.refreshSelect ){
+				html = '<div class="select-list ' + scrollClass + '">' + scrollHtml + '<ul>' + html + '</ul></div>';
+				$( html ).prependTo( this.$container );
 //				html = '<ul>'+html+'</ul>';
 	//			$(html).prependTo($('.select-list', this.$container));
 			}else{
-				html = '<span class="custom-text">'+this.$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
-				$(html).prependTo(this.$container);
+				html = '<span class="custom-text">' + this.$selected[0].text + '</span><div class="select-list ' + scrollClass + '">' + scrollHtml + '<ul>' + html + '</ul></div>';
+				$( html ).prependTo( this.$container );
 			}
 
-			this.$list = $('ul', this.$container);
-			this.$text = $('.custom-text', this.$container);
-			this.$listContainer = $('.select-list', this.$container);
+			this.$list = $( 'ul', this.$container );
+			this.$text = $( '.custom-text', this.$container );
+			this.$listContainer = $( '.select-list', this.$container );
 			this._clickHandler();
 			
 			// give class to the selected element
-			$('li:eq('+(this.$selected.index())+')', this.$list).addClass('selected');
+			$( 'li:eq(' + ( this.$selected.index() ) + ')', this.$list ).addClass( 'selected' );
 
 			// give width to elements
-			this.$container.removeClass('done');
-			this.setWidthCS(this.config.width);
+			this.$container.removeClass( 'done' );
+			this.setWidthCS( this.config.width );
 			
 			// standard top distance
-			this.standardTop = parseInt(this.$listContainer.css('top'));
+			this.standardTop = parseInt( this.$listContainer.css( 'top' ), 10 );
 
 			// fire function for max length
-			this._getLength({refreshSelect: e.refreshSelect });
+			this._getLength( { refreshSelect: e.refreshSelect } );
 		},
 		// html for custom select
 		_generateHtml: function(){
 			this.$collection = this.$cselect.children();
 			var html = '';
-			for (var i = 0; i < this.$collection.length; i++){
-				var $this = $(this.$collection[i]);
-				html += '<li class="'+ ($this.attr('disabled') === 'disabled' ? 'disabled' : '') +'" data-value="'+$this[0].value+'">'+($this.data('selectik') ? $this.data('selectik') : $this[0].text)+'</li>';
-			 };
+			for ( var i = 0, collectionLength = this.$collection.length; i < collectionLength; i++ ) {
+				var $this = $( this.$collection[ i ] );
+				html += '<li class="' + ( $this.attr( 'disabled' ) === 'disabled' ? 'disabled' : '' ) + '" data-value="' + $this[ 0 ].value + '">' + ( $this.data( 'selectik' ) ? $this.data( 'selectik' ) : $this[ 0 ].text )+'</li>';
+			}
 			return html;
 		},
-		_getLength: function(e){
-			if (!e.refreshSelect){ this.heightItem = $('li:nth-child(1)', this.$list).outerHeight(); }
+		_getLength: function( e ){
+			if ( !e.refreshSelect ) { this.heightItem = $( 'li:nth-child(1)', this.$list ).outerHeight(); }
 
 			// check if count of options more then max
-		  	if (this.count < this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); this.scrollL = false; return; }
+			if ( this.count < this.config.maxItems || this.config.maxItems === 0 ) {
+				this.$listContainer.hide();
+				this.$container.addClass('done');
+				this.scrollL = false;
+				return;
+			}
 			this.scrollL = true;
-           	this.heightList = this.heightItem*this.count;
-			this.heightContainer = this.heightItem*this.config.maxItems;
+			this.heightList = this.heightItem * this.count;
+			this.heightContainer = this.heightItem * this.config.maxItems;
 
 			// put height for list
-			this.$list.css('height', this.heightContainer);
+			this.$list.css( 'height', this.heightContainer );
 			this.$listContainer.hide();
-			this.$container.addClass('done');
-			if (this.config.customScroll == 1) {  this._getScroll(); }
+			this.$container.addClass( 'done' );
+			if ( this.config.customScroll == 1 ) {  this._getScroll(); }
 		},
 		// private method: custom scroll
-		_getScroll: function(){
+		_getScroll: function() {
 			var allHeight = this.heightItem*this.count;
 			this.heightShift = -allHeight+this.heightContainer;
 			this.$bgScroll = $('.select-scroll', this.$listContainer);
@@ -141,7 +159,7 @@
 			if (this.config.customScroll){ this._scrollHandlers(); }
 		},
 		_scrollHandlers: function(){
-            var shiftL;
+			var shiftL;
 			var selectik = this;
 			// bind mousewheel
 			this.$list.bind('mousewheel', function(event, deltaY) {
@@ -159,10 +177,10 @@
 			});
 			
 			// bind scroll on mousedown selecting
-	        this.$text.on('mousedown', function(e){ selectik._draggable(e, true); });
+			this.$text.on('mousedown', function(e){ selectik._draggable(e, true); });
 
 			// draggable handler and calculate
-	        this.$scroll.on('mousedown', function(e){ mouseTrigger = false; selectik._draggable(e, true); });
+			this.$scroll.on('mousedown', function(e){ mouseTrigger = false; selectik._draggable(e, true); });
 			$(document).on('mouseup', function(e){ selectik._draggable(e, false); });
 		},
 		// private method: draggable for scroll
@@ -217,7 +235,7 @@
 			}
 			if (!this.scrollL) { return; }
 			this._shiftHelper(-this.topShift);
-		},		
+		},
 		// private method: click on li
 		_clickHandler: function(){
 			var selectik = this;
@@ -228,15 +246,15 @@
 		},
 		// private method: handlers
 		_handlers: function(){
-            // reset button
+			// reset button
 			var selectik = this;
-            var $reset = $('input[type="reset"]', this.$cselect.parents('form'));
-            if ($reset.length > 0){
-                $reset.bind('click',function(){
-                    var index = (selectik.$selected.length > 0) ? selectik.$selected.index(): 0;
-                    selectik._changeSelected($('option:eq('+index+')', selectik.$cselect));
-                });
-            }
+			var $reset = $('input[type="reset"]', this.$cselect.parents('form'));
+			if ($reset.length > 0){
+				$reset.bind('click',function(){
+					var index = (selectik.$selected.length > 0) ? selectik.$selected.index(): 0;
+					selectik._changeSelected($('option:eq('+index+')', selectik.$cselect));
+				});
+			}
 
 			// change on original select
 			this.$cselect.bind('change', function(){
@@ -246,7 +264,7 @@
 
 			// click on select
 			this.$text.bind('click', function(e){
-	        	if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
+				if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
 				selectik.$cselect.focus();
 				selectik._fadeList(false, true);
 			});
@@ -272,34 +290,34 @@
 				selectik.$cselect.focus();
 			});
 
-            // active class
-            this.$cselect.bind('focus', function(){
-                selectik.$container.addClass('active');
-            });
-            this.$cselect.bind('blur', function(){
+			// active class
+			this.$cselect.bind('focus', function(){
+				selectik.$container.addClass('active');
+			});
+			this.$cselect.bind('blur', function(){
 				if (mouseTrigger) return;
 				selectik.hideCS(true);
-                selectik.$container.removeClass('active');
-            });
+				selectik.$container.removeClass('active');
+			});
 
 			this.$cselect.bind('keyup', function(e) { selectik._keysHandlers(e); });
-			if (isOpera){
+			if (isOpera) {
 				selectik.$cselect.bind('keydown', function() { trigger = true; });
-			};
+			}
 		},
-        // private method: handlers on keys
-        _keysHandlers: function(e){
-            if (e.keyCode == 13 && this.$listContainer.is(':visible')) { this._fadeList(true, false); }
-            if (!isIE){
-                if (e.keyCode == 27 && this.$listContainer.is(':visible')) { this._fadeList(true, true); }
-            }
-            this.$cselect.change();
-            if (this.scrollL) { this._shift($('option:selected', this.$cselect).index()); }
-        },
+		// private method: handlers on keys
+		_keysHandlers: function(e){
+			if (e.keyCode == 13 && this.$listContainer.is(':visible')) { this._fadeList(true, false); }
+			if (!isIE){
+				if (e.keyCode == 27 && this.$listContainer.is(':visible')) { this._fadeList(true, true); }
+			}
+			this.$cselect.change();
+			if (this.scrollL) { this._shift($('option:selected', this.$cselect).index()); }
+		},
 		// private method: change selected
 		_changeSelected: function(e){
 			var dataValue = (e.parents('select').length > 0) ? e.attr('value') : e.data('value');
-            var textValue = e.text();
+			var textValue = e.text();
 			this._changeSelectedHtml(dataValue, textValue, e.index()+1);
 		},
 		// private method: change selected
@@ -319,13 +337,13 @@
 		_fadeList: function(out, text){
 			var $openList = $('.'+this.config.containerClass+'.open_list');
 			if ($openList.length == 1){
-				$openList.children('select').data('selectik').hideCS();	
+				$openList.children('select').data('selectik').hideCS();
 				return;
-			}		
-            if (!text){
-                $openList.children('.select-list').stop(true, true).fadeOut(this.config.speedAnimation).parent().toggleClass('open_list');
-                if (out){ return; }
-            }
+			}
+			if (!text){
+				$openList.children('.select-list').stop(true, true).fadeOut(this.config.speedAnimation).parent().toggleClass('open_list');
+				if (out){ return; }
+			}
 			openList = false;
 			this.positionCS();
 			this.$listContainer.stop(true, true).fadeToggle(this.config.speedAnimation);
@@ -337,8 +355,8 @@
 		hideCS: function(next){
 			this.$listContainer.fadeOut(this.config.speedAnimation);
 			this.$container.removeClass('open_list');
-            if (!next) this.$cselect.focus();
-			openList = true;		
+			if (!next) this.$cselect.focus();
+			openList = true;
 		},
 		// public method: show list
 		showCS: function(){
@@ -360,14 +378,14 @@
 		},
 		// public method: refresh list
 		refreshCS: function() {
-            this._getList({ refreshSelect: true });
-	    },
+			this._getList({ refreshSelect: true });
+		},
 		// public method: change active element
 		changeCS: function(val) {
 			var index = (val.index > 0) ? val.index : $('option[value="'+val.value+'"]', this.$cselect).index() + 1;
 			var $option = $('option:nth-child('+(index)+')', this.$cselect);
 			var dataValue = $option.attr('value');
-			var textValue = $option.text()
+			var textValue = $option.text();
 			this._changeSelectedHtml(dataValue, textValue, index);
 		},
 		// public method: disable list
@@ -380,10 +398,10 @@
 			this.$cselect.attr('disabled', false);
 			this.$container.removeClass('disable');
 		},
-        // public method: required
-        requiredCS: function(){
-            this.$text.toggleClass('required');
-        },
+		// public method: required
+		requiredCS: function(){
+			this.$text.toggleClass('required');
+		},
 		// public method: width of select
 		setWidthCS: function(width){
 			//Paddings may has element or/and it's parent
@@ -394,15 +412,15 @@
 				paddings = parentPaddings + elementPaddings;
 				$(this).css('width', width - paddings);
 			});
-		}		
+		}
 	};
 
 	$.fn.selectik = function(options, methods) {
 		if (isMobile || isOperaMini) return;
-        return this.each(function() {
-            if ($('optgroup', this).length > 0 || $(this).attr('multiple') == 'multiple') { return; }
-            if (undefined == $(this).data('Selectik')) {
-                // create a new instance of the plugin
+		return this.each(function() {
+			if ($('optgroup', this).length > 0 || $(this).attr('multiple') == 'multiple') { return; }
+			if (undefined == $(this).data('Selectik')) {
+				// create a new instance of the plugin
 				var selectik = new Selectik(options);
 				
 				// apply new methods
@@ -412,19 +430,19 @@
 				
 				// fire selectik
 				selectik._init(this);
-                $(this).data('selectik', selectik);
-            }
-        });
-    };
+				$(this).data('selectik', selectik);
+			}
+		});
+	};
 	
 	// global handlers
 	$(window).resize(function(){
-        if (openList){
+		if (openList){
 			var $list = $('.open_list');
-            if (!$list.length > 0) { return; }
+			if (!$list.length > 0) { return; }
 			
-            $list.children('select').data('selectik').positionCS($('.select-list:visible'));
-        }
+			$list.children('select').data('selectik').positionCS($('.select-list:visible'));
+		}
 	});
 	$(document).bind('click', function(e){
 		if (trigger) { trigger = false; return; }
