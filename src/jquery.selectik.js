@@ -252,6 +252,7 @@
 			// mouse down/up
 			var mouseDown = false;
 			this.$text.bind('mousedown', function(e){
+				e.preventDefault()
 				mouseDown = true;
 				setTimeout(function(){
 					if (mouseDown){
