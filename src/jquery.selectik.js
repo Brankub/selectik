@@ -45,7 +45,7 @@
 		},
 		// private method: wrap selects in divs and fire html generator
 		_generateContainer: function(){
-			this.$cselect.wrap('<div class="'+this.config.containerClass+'"></div>'); 
+			this.$cselect.wrap('<div class="'+this.config.containerClass + (this.$cselect.attr('disabled') === 'disabled' ? ' disable' : '') +'"></div>'); 
 			this.$container = this.$cselect.parent(); 
 			this._getList({ refreshHtml: false }); 
 		},
@@ -68,18 +68,16 @@
 			if (e.refreshSelect){
 				html = '<div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo(this.$container);
-//				html = '<ul>'+html+'</ul>';
-	//			$(html).prependTo($('.select-list', this.$container));
 			}else{
 				html = '<span class="custom-text">'+this.$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo(this.$container);
 			}
-
+			
 			this.$list = $('ul', this.$container);
 			this.$text = $('.custom-text', this.$container);
 			this.$listContainer = $('.select-list', this.$container);
 			this._clickHandler();
-			
+
 			// give class to the selected element
 			$('li:eq('+(this.$selected.index())+')', this.$list).addClass('selected');
 
@@ -221,9 +219,9 @@
 		// private method: click on li
 		_clickHandler: function(){
 			var selectik = this;
-			this.$listContainer.on('mousedown', 'li', function(){
-				 if ($(this).hasClass('disabled')) { return false; }
-				 selectik._changeSelected($(this));
+			this.$listContainer.off('mousedown', 'li').on('mousedown', 'li', function(e){
+				if ($(this).hasClass('disabled')) { e.preventDefault(); return;	};
+				selectik._changeSelected($(this));
 			});	
 		},
 		// private method: handlers
@@ -253,7 +251,7 @@
 			
 			// mouse down/up
 			var mouseDown = false;
-			this.$text.bind('mousedown', function(){
+			this.$text.bind('mousedown', function(e){
 				mouseDown = true;
 				setTimeout(function(){
 					if (mouseDown){
@@ -266,7 +264,8 @@
 				mouseDown = false;
 			});
 			this.$listContainer.on('mouseup', 'li',function(e){
-				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));				
+				if ($(this).hasClass('disabled')) { return;	};
+				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));
 				selectik.hideCS(true);
 				mouseTrigger = false;
 				selectik.$cselect.focus();
@@ -427,6 +426,7 @@
         }
 	});
 	$(document).bind('click', function(e){
+		if ($(e.target).hasClass('disabled')) { return; }
 		if (trigger) { trigger = false; return; }
 		if (openList){
 			openList = false;
