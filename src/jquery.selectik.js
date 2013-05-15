@@ -220,8 +220,10 @@
 		_clickHandler: function(){
 			var selectik = this;
 			this.$listContainer.off('mousedown', 'li').on('mousedown', 'li', function(e){
+				if (selectik.change) { selectik.change = false; return true; }
 				if ($(this).hasClass('disabled')) { e.preventDefault(); return;	};
-				selectik._changeSelected($(this));
+				selectik.change = true;
+				selectik._changeSelected($(this));				
 			});	
 		},
 		// private method: handlers
@@ -265,7 +267,9 @@
 				mouseDown = false;
 			});
 			this.$listContainer.on('mouseup', 'li',function(e){
+				if (!mouseTrigger) { return true; }
 				if ($(this).hasClass('disabled')) { return;	};
+				selectik.change = true;
 				selectik._changeSelected($('option:eq('+$(e.currentTarget).index()+')', selectik.$cselect));
 				selectik.hideCS(true);
 				mouseTrigger = false;
@@ -309,7 +313,6 @@
 			var $selected = $('.selected', this.$list);
 			$('option:eq('+$selected.index()+')', this.$cselect).prop('selected', false); //
 			$('option:eq('+(index-1)+')', this.$cselect).prop('selected', true);
-
 			this.$cselect.prop('value', dataValue).change();
 			$selected.removeClass('selected');
 			$('li:nth-child('+ index +')', this.$list).addClass('selected');
