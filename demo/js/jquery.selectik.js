@@ -20,7 +20,8 @@
             maxItems: 0,
             customScroll: 1,
             speedAnimation:200,
-			smartPosition: true
+			smartPosition: true,
+			minScrollHeight: 10 // pixels
         }, options || {});
     };	
 	
@@ -30,6 +31,7 @@
             this.cselect = element;
 			this.scrollL = false;
 			this.change = false;
+			this.fixScroll = false;
 			
 			//Check select width
 			//Select width is inconsistent in different browser,
@@ -130,6 +132,10 @@
 
 			// height of scroll
 			this.heightScroll = this.heightContainer*(this.heightContainer / allHeight);
+			if (this.heightScroll < this.config.minScrollHeight){
+				this.heightScroll = this.config.minScrollHeight;
+				this.fixScroll = true;
+			}
 			this.$scroll.css('height', this.heightScroll);
 
 			// if selected
@@ -201,7 +207,8 @@
 			e = (e > 0) ? 0 : e;
 			e = (e < this.heightShift) ? this.heightShift: e;
 			this.$list.css('top', e);
-			this.$scroll.css('top', -e/this.relating);
+			var scrollPosition = (this.fixScroll) ? -( e / this.relating + ( e / this.heightShift * this.config.minScrollHeight ) ) : -( e / this.relating );
+			this.$scroll.css('top', scrollPosition);
 		},
 		// private method: shift conrtol
 		_shift: function(indexEl){

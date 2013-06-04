@@ -15,6 +15,16 @@ Features:
 
 **Updates:**
 
+Added additional parameter 'minScrollHeight' for scroll:
+
+```
+...
+$('select').selectik({
+	minScrollHeight: 20
+});
+...
+```
+
 Added HTML support in custom list item. Just add attribute to options (data-selectik) with HTML version:
 
 ```

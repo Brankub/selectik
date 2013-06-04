@@ -8,7 +8,7 @@
 <!--[if lte IE 9]>
 <link rel="stylesheet" type="text/css" href="css/ie.css" />
 <![endif]-->
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/jquery.mousewheel.js"></script>
 <script type="text/javascript" src="js/jquery.selectik.js"></script>
 </head>
@@ -36,7 +36,7 @@
         ...
         </p>
         <h2>Change/add methods</h2>
-        <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>
+        <p>Now you can change/add methods for custom select. For example you need to change method of generation html for the list:</p>        
         <p class="code">
         $('select').selectik({maxItems: 8}, <br/>
         	<span>{</span><br/>
@@ -64,12 +64,12 @@
                 <div class="selects">
                     <div class="first select-block">
                         <form>
-                            <select>
+                            <select a>
                                 <option value="0">Choose hero</option>
                                 <option value="1" data-selectik="Spider <i>Man</i>">Spider Man</option>
                                 <option value="2">Wolverine</option>
                                 <option value="3">Captain America</option>
-                                <option value="X-Men">X-Men</option>
+                                <option value="X-Men" disabled="disabled">X-Men</option>
                                 <option value="Crocodile">Crocodile</option>
                                 <option value="Cheburashka">Cheburashka</option>
                                 <option value="Elephant">Elephant</option>
@@ -115,6 +115,11 @@
                            <span></span>
                        </div>
                        <div class="line">
+                           <b class="l-text">Minimal height of scroll</b>
+                           <input type="number" id="minScroll" value="20" min="1"/>
+                           <span></span>
+                       </div>
+                       <div class="line">
                            <b class="l-text">Type of scroll</b>
                            <select id="type">
                             <option value="1">Custom</option>
@@ -141,6 +146,7 @@
                        <h3>Show/hide <ins>second</ins> list</h3>
                        <input type="button" onClick="$('.second select').data('selectik').showCS();" value="Show" />
                        <input type="button" onClick="$('.second select').data('selectik').hideCS();" value="Hide" />
+
                        <h3>Set new 'selected' (active) option for <ins>first</ins> select</h3>
                        <b class="l-text">Index number option</b>
                        <input type="text" id="number" value="1" type="number" min="1" class="l-input" /><input type="button" onClick="$('.first select').data('selectik').changeCS({index: $('#number').val()});" value="Set" /><br/><br/>
@@ -190,6 +196,7 @@
             <p><b>Type of scroll (customScroll)</b> - choose type of scroll (custom or original). 1 - custom, 0 - original. Default value - '1'.</p>
             <p><b>Speed of animation (speedAnimation)</b> - speed of show/hide animation in milliseconds. Default value - '200'.</p>
             <p><b>Smart positioning</b>.  Default value - 'true'.</p>
+            <p><b>Minimal height of scroll</b>.  Default value - '10'.</p>
             <b>Example of using parametrs:</b>
             <p class="code">
             	$('select').selectik({<br/>
@@ -198,6 +205,7 @@
                 <span>customScroll: 0,</span><br/>
                 <span>speedAnimation: 100</span><br/>
                 <span>smartPosition: false</span><br/>
+                <span>minScrollHeight: 20</span><br/>
                 });
             </p>
             <h1>Plugin API</h1>
@@ -234,8 +242,7 @@
     <script type="text/javascript">
     $(document).ready(function() {
         // attach the plugin to all selects
-		
-        $('.selects select').selectik({maxItems: 8}, {
+        $('.selects select').selectik({maxItems: 8, minScrollHeight: 20}, {
 				_generateHtml: function(){
 					this.$collection = this.$cselect.children();
 					var html = '';
@@ -262,6 +269,7 @@
 			var type = $('#type').val();
 			var speed = parseInt($('#speed').val());
 			var maxEl = parseInt($('#maxEl').val());
+			var minScroll = parseInt($('#minScroll').val());
 			
 			for ( var i = 0; i < quantity; i++ ){
 				html += '<option value="Option'+i+'">Option'+i+'</option>';
@@ -274,7 +282,8 @@
 				width: width,
 				maxItems: maxEl,
 				customScroll: type,
-				speedAnimation: speed
+				speedAnimation: speed,
+				minScrollHeight: minScroll
 			});
 			d1 = new Date();
 			selectCount++;
