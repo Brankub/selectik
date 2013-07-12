@@ -47,7 +47,7 @@
 		},
 		// private method: wrap selects in divs and fire html generator
 		_generateContainer: function(){
-			this.$cselect.wrap('<div class="'+this.config.containerClass + (this.$cselect.attr('disabled') === 'disabled' ? ' disable' : '') +'"></div>'); 
+			this.$cselect.wrap('<div class="'+this.config.containerClass + (this.$cselect.attr('disabled') === 'disabled' ? ' disabled' : '') +'"></div>'); 
 			this.$container = this.$cselect.parent(); 
 			this._getList({ refreshHtml: false }); 
 		},
@@ -228,7 +228,7 @@
 			var selectik = this;
 			this.$listContainer.off('mousedown', 'li').on('mousedown', 'li', function(e){
 				if (selectik.change) { selectik.change = false; return true; }
-				if ($(this).hasClass('disabled')) { e.preventDefault(); return;	};
+				if (!selectik._checkDisabled($(this), e)) return;
 				selectik.change = true;
 				selectik._changeSelected($(this));				
 			});	
@@ -253,7 +253,7 @@
 
 			// click on select
 			this.$text.bind('click', function(e){
-	        	if( selectik.$container.hasClass('disable') || mouseTrigger) { return false; }
+	        	if( selectik.$container.hasClass('disabled') || mouseTrigger) { return false; }
 				selectik.$cselect.focus();
 				selectik._fadeList(false, true);
 			});
@@ -261,6 +261,7 @@
 			// mouse down/up
 			var mouseDown = false;
 			this.$text.bind('mousedown', function(e){
+				if (!selectik._checkDisabled(selectik.$container, e)) return;
 				e.preventDefault()
 				mouseDown = true;
 				setTimeout(function(){
@@ -297,6 +298,10 @@
 			if (isOpera){
 				selectik.$cselect.bind('keydown', function() { trigger = true; });
 			};
+		},
+		_checkDisabled: function(el, e){
+			if (el.hasClass('disabled')) { e.preventDefault(); return false; };
+			return true;
 		},
         // private method: handlers on keys
         _keysHandlers: function(e){
@@ -383,12 +388,12 @@
 		// public method: disable list
 		disableCS: function(){
 			this.$cselect.attr('disabled', true);
-			this.$container.addClass('disable');
+			this.$container.addClass('disabled');
 		},
 		// public method: enable list
 		enableCS: function(){
 			this.$cselect.attr('disabled', false);
-			this.$container.removeClass('disable');
+			this.$container.removeClass('disabled');
 		},
         // public method: required
         requiredCS: function(){

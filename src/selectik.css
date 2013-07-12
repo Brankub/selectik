@@ -68,7 +68,7 @@
 	left:				1px;
 	cursor:				pointer
 	}
-.disable *{
+.disabled *{
     cursor:             default !important
     }
 /* Style for example*/
@@ -78,7 +78,7 @@
 	font-weight:		bold;
 	}
 .custom-select .custom-text,
-.custom-select.disable span.custom-text:hover{
+.custom-select.disabled span.custom-text:hover{
 	overflow:			hidden;
 	height:				26px;
 	padding:			0 0 0 10px;
@@ -184,6 +184,6 @@
 .custom-select .hover{
 	color:				#FFF
 	}
-.disable{
+.custom-select.disabled{
     opacity:            0.5 !important;
     }
