@@ -32,6 +32,7 @@
 			this.scrollL = false;
 			this.change = false;
 			this.fixScroll = false;
+			this.mouseDown = false;
 			
 			//Check select width
 			//Select width is inconsistent in different browser,
@@ -259,20 +260,19 @@
 			});
 			
 			// mouse down/up
-			var mouseDown = false;
 			this.$text.bind('mousedown', function(e){
 				if (!selectik._checkDisabled(selectik.$container, e)) return;
 				e.preventDefault()
-				mouseDown = true;
+				selectik.mouseDown = true;
 				setTimeout(function(){
-					if (mouseDown){
+					if (selectik.mouseDown){
 						mouseTrigger = true;
 						selectik._fadeList(false, true);
 					}
 				}, 300);
 			});
 			this.$text.bind('mouseup', function(){
-				mouseDown = false;
+				selectik.mouseDown = false;
 			});
 			this.$listContainer.on('mouseup', 'li',function(e){
 				if (!mouseTrigger) { return true; }
@@ -450,6 +450,7 @@
 			if ($list.length > 0){
 				var $select = $list.children('select');
 				$select.data('selectik').hideCS();
+				mouseTrigger = false;
 			}
 		}
 	});
