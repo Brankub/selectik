@@ -411,7 +411,7 @@
 		if (isMobile || isOperaMini) return;
         return this.each(function() {
             if ($('optgroup', this).length > 0 || $(this).attr('multiple') == 'multiple') { return; }
-            if (undefined == $(this).data('Selectik')) {
+            if (undefined == $(this).data('selectik')) {
                 // create a new instance of the plugin
 				var selectik = new Selectik(options);
 				
