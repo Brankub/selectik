@@ -72,7 +72,8 @@
 				html = '<div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
 				$(html).prependTo(this.$container);
 			}else{
-				html = '<span class="custom-text">'+this.$selected[0].text+'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
+		                html = '<span class="custom-text">'+ (this.$selected.data('selectik') ? this.$selected.data('selectik') : this.$selected[0].text) +'</span><div class="select-list '+scrollClass+'">'+scrollHtml+'<ul>'+html+'</ul></div>';
+
 				$(html).prependTo(this.$container);
 			}
 			
