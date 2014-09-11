@@ -11,7 +11,7 @@
 	var isOpera = (/opera/i.test(navigator.userAgent.toLowerCase()));
 	var isIE = (/msie/i.test(navigator.userAgent.toLowerCase()));
 	var isOperaMini  = Object.prototype.toString.call(window.operamini) === "[object OperaMini]";
-	
+
 	Selectik = function(options){
 		// merge options
         this.config = $.extend(true, {
@@ -105,13 +105,26 @@
 			return html;
 		},
 		_getLength: function(e){
-			if (!e.refreshSelect){ this.heightItem = $('li:nth-child(1)', this.$list).outerHeight(); }
+            var selectik = this;
+			if (!e.refreshSelect){
+                this.heightItem = $('li:nth-child(1)', this.$list).outerHeight();
+
+                // Calculate heights using all items.
+                this.totalItemsHeight = 0;
+                this.totalContainerHeight = 0;
+                $('li', this.$list).each(function(index, el) {
+                    selectik.totalItemsHeight += $(this).outerHeight();
+                    if(index < selectik.config.maxItems) {
+                        selectik.totalContainerHeight += $(this).outerHeight();
+                    }
+                });
+            }
 
 			// check if count of options more then max
 		  	if (this.count < this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); this.scrollL = false; return; }
 			this.scrollL = true;
-           	this.heightList = this.heightItem*this.count;
-			this.heightContainer = this.heightItem*this.config.maxItems;
+            this.heightList = this.totalItemsHeight;
+            this.heightContainer = this.totalContainerHeight;
 
 			// put height for list
 			this.$list.css('height', this.heightContainer);
@@ -121,7 +134,7 @@
 		},
 		// private method: custom scroll
 		_getScroll: function(){
-			var allHeight = this.heightItem*this.count;
+			var allHeight = this.totalItemsHeight;
 			this.heightShift = -allHeight+this.heightContainer;
 			this.$bgScroll = $('.select-scroll', this.$listContainer);
 			this.$bgScroll.css('height', this.heightContainer);
