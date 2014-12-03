@@ -108,7 +108,7 @@
 			if (!e.refreshSelect){ this.heightItem = $('li:nth-child(1)', this.$list).outerHeight(); }
 
 			// check if count of options more then max
-		  	if (this.count < this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); this.scrollL = false; return; }
+		  	if (this.count <= this.config.maxItems || this.config.maxItems == 0) { this.$listContainer.hide(); this.$container.addClass('done'); this.scrollL = false; return; }
 			this.scrollL = true;
            	this.heightList = this.heightItem*this.count;
 			this.heightContainer = this.heightItem*this.config.maxItems;
