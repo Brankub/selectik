@@ -148,7 +148,7 @@ $('select').selectik(
 
 Support browsers:
 -----------------
-IE7+, Chrome, Safari, Firefox.
+IE9+, Chrome, Safari, Firefox.
 
 License
 -------
