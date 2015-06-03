@@ -39,7 +39,7 @@
             //so we wrap select by inline element and get it's width
             if( this.config.width == 0 ) {
                 this.$cselect.wrap('<span/>');
-                this.config.width = this.$cselect.parent().width();
+                this.config.width = this.$cselect.parent().width() || this.$cselect.outerWidth();
                 this.$cselect.parent().replaceWith( this.$cselect );
             }
 
